@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace IP3D_Fase3
 {
+    
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -11,6 +13,10 @@ namespace IP3D_Fase3
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Map mapa;
+        Camera cam;
+        ClsTank tank, tank2;
 
         public Game1()
         {
@@ -26,8 +32,10 @@ namespace IP3D_Fase3
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // TODO: Add your initialization logic here           
 
+            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            cam = new Camera(GraphicsDevice);                     
             base.Initialize();
         }
 
@@ -39,7 +47,10 @@ namespace IP3D_Fase3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            mapa = new Map(GraphicsDevice, Content, cam);
+            tank = new ClsTank(GraphicsDevice, Content, cam, mapa, new Vector2(10, 10));
+            tank2 = new ClsTank(GraphicsDevice, Content, cam, mapa, new Vector2(10, 9));
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -50,6 +61,7 @@ namespace IP3D_Fase3
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            
         }
 
         /// <summary>
@@ -61,7 +73,10 @@ namespace IP3D_Fase3
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            cam.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cam.position.X, cam.position.Z));
+            cam.View();
+            tank.Update(1);
+            tank2.Update(2);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -75,9 +90,13 @@ namespace IP3D_Fase3
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            mapa.Draw(GraphicsDevice);
+            tank.Draw();
+            tank2.Draw();
             // TODO: Add your drawing code here
-
+            
             base.Draw(gameTime);
         }
     }
 }
+
