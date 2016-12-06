@@ -12,11 +12,12 @@ namespace IP3D_Fase3
 {
     class ClsTank
     {
+       
         Model myModel;
         Matrix worldMatrix;
         Matrix View;
         Matrix Projection;
-
+        Bullet bamB;
         public float scale;
 
         //bones
@@ -57,13 +58,11 @@ namespace IP3D_Fase3
         Vector3 direction;
 
         public ClsTank(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
-        {
-            
-            placement = newPlacement;
+        {            placement = newPlacement;
             camera = cam;
             terrain = map;
             yaw = 0;
-            
+            bamB = new Bullet(device, content, cam, map, newPlacement);
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
 
             float aspectRatio = (float)device.Viewport.Width /
@@ -181,6 +180,8 @@ namespace IP3D_Fase3
 
         public void Draw()
         {
+            bamB.Draw();
+
             // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
