@@ -15,6 +15,8 @@ namespace IP3D_Fase3
         Model model3d;
         int meshCount;//quantidade de meshes no modelo
 
+        float scale;
+
         /// <summary>
         /// Construtor da classe DrawBougingSphere, responçavel por desenhar a BoundingSpheres ao redor da mesh do tank
         /// </summary>
@@ -27,6 +29,7 @@ namespace IP3D_Fase3
             model3d = model;
             meshCount = model3d.Meshes.Count;
             boundingSpheres = new BoundingSphere[meshCount];
+            this.scale = scale;
 
             //associa uma boundingSphere a cada mesh do modelo
             int index = 0;
@@ -53,10 +56,10 @@ namespace IP3D_Fase3
             mergingSphere.Center = modelPos;
         }
 
-        public void Draw(Matrix view, Matrix projection, ClsTank tankBoundingSphere)
+        public void Draw(Matrix view, Matrix projection)
         {
             //escala da bounding boundingsphere em relação ao tank
-            Matrix scaleMatrix = Matrix.CreateScale(tankBoundingSphere.scale);
+            Matrix scaleMatrix = Matrix.CreateScale(scale);
             Matrix translateMatrix = Matrix.CreateTranslation(mergingSphere.Center);
 
             Matrix worldMatrix = scaleMatrix * translateMatrix;

@@ -56,6 +56,7 @@ namespace IP3D_Fase3
         
         public Vector2 placement;
         Vector3 direction;
+        DrawBoundingSphere boundingSphere;
 
         public ClsTank(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
         {
@@ -100,7 +101,9 @@ namespace IP3D_Fase3
 
             turretRotation = 1f;
             cannonRotation = .2f;
-            wheelRotation = .5f;            
+            wheelRotation = .5f;
+
+            boundingSphere = new DrawBoundingSphere(myModel, position, scale);         
         }
 
         public void Update(int num)
@@ -196,8 +199,6 @@ namespace IP3D_Fase3
             rBackWheel.Transform = Matrix.CreateRotationX(wheelRotation) * rBackWheelTransform;
 
             myModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
-            
-           
 
             foreach (ModelMesh mesh in myModel.Meshes) // Desenha o modelo
             {
@@ -210,6 +211,8 @@ namespace IP3D_Fase3
                 }
                 mesh.Draw();
             }
+
+            boundingSphere.Draw(camera.view, camera.projection);
         }
 
     }
