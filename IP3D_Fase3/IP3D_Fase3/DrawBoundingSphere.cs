@@ -13,6 +13,7 @@ namespace IP3D_Fase3
         BoundingSphere mergingSphere;
         BoundingSphere[] boundingSpheres; 
         Model model3d;
+        int meshCount;//quantidade de meshes no modelo
 
         /// <summary>
         /// Construtor da classe DrawBougingSphere, responçavel por desenhar a BoundingSpheres ao redor da mesh do tank
@@ -24,14 +25,14 @@ namespace IP3D_Fase3
         {
             mergingSphere = new BoundingSphere();            
             model3d = model;
-            int meshCount = model3d.Meshes.Count;
+            meshCount = model3d.Meshes.Count;
             boundingSpheres = new BoundingSphere[meshCount];
 
             //associa uma boundingSphere a cada mesh do modelo
             int index = 0;
             foreach (ModelMesh mesh in model3d.Meshes)
             {
-                boundingSpheres[index++] = mesh.BoundingSphere/* multiplicar a escala do tank*/; //NÃO SERIA PRECISO 
+                boundingSpheres[index++] = mesh.BoundingSphere;/* multiplicar a escala do tank*/; //NÃO SERIA PRECISO 
             }
 
             //inclue as boundingSpheres à mergeSphere
@@ -52,10 +53,25 @@ namespace IP3D_Fase3
             mergingSphere.Center = modelPos;
         }
 
-        public void Draw()
+        public void Draw(Matrix view, Matrix projection, ClsTank tankBoundingSphere)
         {
-            
-        }
+            //escala da bounding boundingsphere em relação ao tank
+            Matrix scaleMatrix = Matrix.CreateScale(tankBoundingSphere.scale);
+            Matrix translateMatrix = Matrix.CreateTranslation(mergingSphere.Center);
+
+            Matrix worldMatrix = scaleMatrix * translateMatrix;
+
+            foreach(ModelMesh mesh in model3d.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = worldMatrix;
+                    effect.View = view;
+                    effect.Projection = projection;
+                }
+                mesh.Draw();
+            }
+       
 
     }
 }
