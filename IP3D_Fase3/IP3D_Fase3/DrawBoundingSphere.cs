@@ -56,6 +56,35 @@ namespace IP3D_Fase3
             mergingSphere.Center = modelPos;
         }
 
+        /// <summary>
+        /// Função que calcula se há colisão entre as bounding sphere 
+        /// </summary>
+        /// <param name="inicialPos"></param>
+        /// <param name="finalPos"></param>
+        /// <returns></returns>
+        public bool Collision(Vector3 inicialPos, Vector3 finalPos)
+        {
+            //distancia entre o centro da merging sphere e a posição inical da bala
+            float a = Math.Abs((mergingSphere.Center.X - finalPos.X) + (mergingSphere.Center.Y - finalPos.Y) + (mergingSphere.Center.Z - finalPos.Z));
+            //distancia entre o centro da merging sphere e a posição inical da bala
+            float b = Math.Abs((mergingSphere.Center.X - inicialPos.X) + (mergingSphere.Center.Y - inicialPos.Y) + (mergingSphere.Center.Z - inicialPos.Z));
+            //distancia entre a posição final e inicial
+            float c = Math.Abs((inicialPos.X-finalPos.X) + (inicialPos.Y - finalPos.Y) + (inicialPos.Z - finalPos.Z));
+            //semi perimetro 
+            float sp = (a + b + c) / 2;
+
+            //area do terreno
+            float area = (float)Math.Sqrt(sp * (sp - a) * (sp - b) * (sp - c));
+
+            //distancia entre o centro da bounding sphere e a trajetoria realisada pela bala
+            float d = 2 * area / c;
+
+            if (d < mergingSphere.Radius)
+                return true;
+            else
+                return false;
+        }
+
         public void Draw(Matrix view, Matrix projection)
         {
             //escala da bounding boundingsphere em relação ao tank
