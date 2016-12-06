@@ -58,7 +58,8 @@ namespace IP3D_Fase3
         Vector3 direction;
 
         public ClsTank(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
-        {            placement = newPlacement;
+        {
+            placement = newPlacement;
             camera = cam;
             terrain = map;
             yaw = 0;
@@ -104,6 +105,8 @@ namespace IP3D_Fase3
 
         public void Update(int num)
         {
+
+            bamB.bulletUpdate();
             switch (num)
             {
                 case 1:
@@ -127,6 +130,8 @@ namespace IP3D_Fase3
             float directionZ = (float)Math.Cos(yaw);
             switch (num)
             {
+                
+
                 case 1:
                     //andar com o tank
                     if (Keyboard.GetState().IsKeyDown(Keys.W))
@@ -181,7 +186,6 @@ namespace IP3D_Fase3
         public void Draw()
         {
             bamB.Draw();
-
             // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
@@ -193,6 +197,8 @@ namespace IP3D_Fase3
 
             myModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
             
+           
+
             foreach (ModelMesh mesh in myModel.Meshes) // Desenha o modelo
             {
                 foreach (BasicEffect effect in mesh.Effects)

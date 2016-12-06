@@ -23,23 +23,22 @@ namespace IP3D_Fase3
         public float scale;
         public float height;
         public float yaw = 0;
-
+        bool bulletFlag;
         public Bullet(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
         {
             placement = newPlacement;
             camera = cam;
             terrain = map;
-            myBullet = content.Load<Model>("tank");
+            myBullet = content.Load<Model>("Cube");
 
             //direction
 
             float aspectRatio = (float)device.Viewport.Width /
                                       device.Viewport.Height;
 
-
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
-            scale = 0.001f;
+            scale = 100f;
 
             worldMatrix = cam.world;
             View = cam.view;
@@ -50,14 +49,18 @@ namespace IP3D_Fase3
         public void bulletUpdate()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
+                bulletFlag = true;
+
+            
+            if (bulletFlag)
                 position += new Vector3(3, 3, 3);
-            }
+            
         }
 
 
         public void Draw()
         {
+            myBullet.Root.Transform = Matrix.CreateScale(scale)* Matrix.CreateTranslation(position);
             foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
             {
                 foreach (BasicEffect effect in mesh.Effects)
