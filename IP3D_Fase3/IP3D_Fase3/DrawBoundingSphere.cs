@@ -61,7 +61,7 @@ namespace IP3D_Fase3
 
             Matrix worldMatrix = scaleMatrix * translateMatrix;
 
-            foreach(ModelMesh mesh in model3d.Meshes)
+            foreach (ModelMesh mesh in model3d.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -71,7 +71,7 @@ namespace IP3D_Fase3
                 }
                 mesh.Draw();
             }
-       
+        }
 
     }
 }

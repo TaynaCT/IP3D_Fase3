@@ -58,6 +58,7 @@ namespace IP3D_Fase3
 
         public ClsTank(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
         {
+            
             placement = newPlacement;
             camera = cam;
             terrain = map;
