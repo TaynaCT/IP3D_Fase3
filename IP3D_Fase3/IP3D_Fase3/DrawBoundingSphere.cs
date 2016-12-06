@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FASE3
+namespace IP3D_Fase3
 {
     class DrawBoundingSphere
     {
@@ -14,7 +14,13 @@ namespace FASE3
         BoundingSphere[] boundingSpheres; 
         Model model3d;
 
-        public DrawBoundingSphere(Model model, Vector3 modelPos)
+        /// <summary>
+        /// Construtor da classe DrawBougingSphere, responçavel por desenhar a BoundingSpheres ao redor da mesh do tank
+        /// </summary>
+        /// <param name="model">modelo 3D a ser usado</param>
+        /// <param name="modelPos">posição do modelo</param>
+        /// <param name="scale">escala do modelo</param>
+        public DrawBoundingSphere(Model model, Vector3 modelPos, float scale)
         {
             mergingSphere = new BoundingSphere();            
             model3d = model;
@@ -25,7 +31,7 @@ namespace FASE3
             int index = 0;
             foreach (ModelMesh mesh in model3d.Meshes)
             {
-                boundingSpheres[index++] = mesh.BoundingSphere/* mutiplicar a escala do tank*/; //NÃO SERIA PRECISO 
+                boundingSpheres[index++] = mesh.BoundingSphere/* multiplicar a escala do tank*/; //NÃO SERIA PRECISO 
             }
 
             //inclue as boundingSpheres à mergeSphere

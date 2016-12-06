@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FASE3
+namespace IP3D_Fase3
 {
     class ClsTank
     {
@@ -17,7 +17,7 @@ namespace FASE3
         Matrix View;
         Matrix Projection;
 
-        float scale;
+        public float scale;
 
         //bones
         ModelBone turretBone;
