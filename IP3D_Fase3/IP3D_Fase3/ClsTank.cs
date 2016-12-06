@@ -124,7 +124,7 @@ namespace IP3D_Fase3
                                   (Keyboard.GetState().IsKeyDown(Keys.H) ? 1 : 0)) * -.02f;
                     break;
             }
-
+                
 
             float directionX = (float)Math.Sin(yaw);
             float directionZ = (float)Math.Cos(yaw);

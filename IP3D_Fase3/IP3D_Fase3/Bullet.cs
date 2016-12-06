@@ -30,7 +30,7 @@ namespace IP3D_Fase3
             camera = cam;
             terrain = map;
             myBullet = content.Load<Model>("Cube");
-
+            bulletFlag = false;
             //direction
 
             float aspectRatio = (float)device.Viewport.Width /
@@ -38,7 +38,7 @@ namespace IP3D_Fase3
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
-            scale = 100f;
+            scale = 0.11f;
 
             worldMatrix = cam.world;
             View = cam.view;
@@ -53,18 +53,19 @@ namespace IP3D_Fase3
 
             
             if (bulletFlag)
-                position += new Vector3(3, 3, 3);
+                position += new Vector3(1, 1, 1)* 0.002f;
+
             
         }
 
 
         public void Draw()
         {
-            myBullet.Root.Transform = Matrix.CreateScale(scale)* Matrix.CreateTranslation(position);
             foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
+                    effect.World = Matrix.CreateScale(scale)* Matrix.CreateTranslation(position);
                     effect.View = camera.view;
                     effect.Projection = camera.projection;
                     effect.EnableDefaultLighting();
