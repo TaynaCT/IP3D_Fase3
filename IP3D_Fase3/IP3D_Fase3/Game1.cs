@@ -75,8 +75,8 @@ namespace IP3D_Fase3
                 Exit();
             cam.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cam.position.X, cam.position.Z));
             cam.View();
-            tank.Update(1);
-            tank2.Update(2);
+            tank.Update(1, gameTime);
+            tank2.Update(2, gameTime);
             // TODO: Add your update logic here
 
             base.Update(gameTime);

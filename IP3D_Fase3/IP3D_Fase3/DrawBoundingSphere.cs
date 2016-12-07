@@ -84,7 +84,7 @@ namespace IP3D_Fase3
             else
                 return false;
 
-            mergingSphere.Intersects
+            
         }
 
         public void Draw(Matrix view, Matrix projection)
