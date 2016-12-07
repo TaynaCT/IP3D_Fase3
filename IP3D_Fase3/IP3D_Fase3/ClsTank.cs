@@ -106,10 +106,10 @@ namespace IP3D_Fase3
             boundingSphere = new DrawBoundingSphere(myModel, position, scale);         
         }
 
-        public void Update(int num)
+        public void Update(int num, GameTime gameTime)
         {
+            bamB.bulletUpdate(gameTime);
 
-            bamB.bulletUpdate();
             switch (num)
             {
                 case 1:

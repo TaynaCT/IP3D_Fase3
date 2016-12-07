@@ -47,8 +47,6 @@ namespace IP3D_Fase3
             worldMatrix = cam.world;
             View = cam.view;
             Projection = cam.projection;
-
-
         }
         
         public void bulletUpdate(GameTime gameTime)
