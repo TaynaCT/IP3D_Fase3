@@ -149,6 +149,7 @@ namespace IP3D_Fase3
                         wheelRotation -= .2f;
                     }
 
+
                     //rodar o tanque
                     if (Keyboard.GetState().IsKeyDown(Keys.A))
                         yaw += .05f;
@@ -191,7 +192,7 @@ namespace IP3D_Fase3
         {
 
 
-                bamB.Draw();
+            bamB.Draw();
 
 
 

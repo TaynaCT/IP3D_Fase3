@@ -27,7 +27,6 @@ namespace IP3D_Fase3
         bool bulletFlag;
 
 
-
         public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
         {
             camera = cam;
@@ -95,10 +94,7 @@ namespace IP3D_Fase3
 
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        for (int i = 0; i < 1; i++)
-                        {
 
-                        }
                         world1 = effect.World;
                         effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
                         effect.View = camera.view;
