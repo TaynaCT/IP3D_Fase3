@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace IP3D_Fase3
 {
-    class Camera
+    class CameraSurfaceFollow
     {
         public Matrix view; 
         public Matrix projection { get; protected set; }
@@ -28,7 +28,7 @@ namespace IP3D_Fase3
         float nearPlane = .1f;
         float farPlane = 700f;
 
-        public Camera(GraphicsDevice device)
+        public CameraSurfaceFollow(GraphicsDevice device)
         {
             world = Matrix.Identity;
 

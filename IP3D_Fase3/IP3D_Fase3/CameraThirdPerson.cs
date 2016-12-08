@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace IP3D_Fase3
 {
-    class CameraFree
+    class CameraThirdPerson
     {
         public Matrix view; 
         public Matrix projection { get; protected set; }
@@ -28,13 +28,14 @@ namespace IP3D_Fase3
         float nearPlane = .1f;
         float farPlane = 700f;
 
-        public CameraFree(GraphicsDevice device)
+        public CameraThirdPerson(GraphicsDevice device, Vector3 tankPos)
         {
             world = Matrix.Identity;
 
             effect = new BasicEffect(device);
-                       
-            position = new Vector3(10, 10, 10);
+
+            position = tankPos + new Vector3(-10, 5, -10);  
+
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
             up = Vector3.Up;
             speed = .2f;
@@ -46,7 +47,7 @@ namespace IP3D_Fase3
             
         }
 
-        public void Update(Point centre, float timePassed)
+        public void Update(Point centre, float timePassed, float surfaceFollow)
         {
             Vector3 lastPos = position;
             //rotação 
@@ -55,7 +56,9 @@ namespace IP3D_Fase3
 
             direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(Vector3.Up, -mouseRotation.X));
             direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(cameraDirection, -mouseRotation.Y));
-                        
+
+            position.Y = surfaceFollow + .5f;
+            
             target = direction + position;
 
             //movimentação da camera 
@@ -69,16 +72,20 @@ namespace IP3D_Fase3
             //se for a tecla 6 a soma fica: position += cameraRight * timePassed;
             //se for 4: position += -cameraRight * timePassed;
             //o mesmo para verificação das teclas 8 e 5, so que nesse caso é somado a variavel direction
+            if (surfaceFollow == -1)
+                position = lastPos;
 
             position += ((Keyboard.GetState().IsKeyDown(Keys.NumPad6) ? 1 : 0) -
-                         (Keyboard.GetState().IsKeyDown(Keys.NumPad4) ? 1 : 0)) * cameraDirection * .2f;            
+                         (Keyboard.GetState().IsKeyDown(Keys.NumPad4) ? 1 : 0)) * cameraDirection * .02f;            
 
             position += ((Keyboard.GetState().IsKeyDown(Keys.NumPad8) ? 1 : 0) -
-                         (Keyboard.GetState().IsKeyDown(Keys.NumPad5) ? 1 : 0)) * direction * .2f;
-            
-            Mouse.SetPosition(centre.X, centre.Y); // mantem o o ponteiro dentro da janela do jogo
-            Console.WriteLine("centre.x: "+ centre.X + "centre.y:  " + centre.Y);//DEBUG
-            
+                         (Keyboard.GetState().IsKeyDown(Keys.NumPad5) ? 1 : 0)) * direction * .02f;
+
+            try
+            {
+                Mouse.SetPosition(centre.X, centre.Y); // mantem o o ponteiro dentro da janela do jogo
+            }
+            catch (Exception) { }
         }        
 
         public Matrix View()
