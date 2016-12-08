@@ -27,9 +27,8 @@ namespace IP3D_Fase3
         bool bulletFlag;
 
 
-        public Bullet(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
+        public Bullet(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector3 pos)
         {
-            placement = newPlacement;
             camera = cam;
             terrain = map;
             myBullet = content.Load<Model>("Cube");
@@ -40,9 +39,9 @@ namespace IP3D_Fase3
                                       device.Viewport.Height;
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
-            position = new Vector3(placement.X, height, placement.Y);
+            position = pos;
             inicialPos = position;
-            scale = 0.11f;
+            scale = 0.09f;
 
             worldMatrix = cam.world;
             View = cam.view;
@@ -50,16 +49,19 @@ namespace IP3D_Fase3
         }
         
         public void bulletUpdate(GameTime gameTime)
-        {
+        {              float gravity = 0;
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
                 bulletFlag = true;
-
+  
+                gravity -= 0.3f;
+            }
 
             if (bulletFlag)
-            {
-                position += new Vector3(1, 1, 1) * 0.002f;
+            { 
+                position += new Vector3(1,gravity, 1) * 0.01f;
                 Trajectory(gameTime);
-            }       
+            }
         }
 
         /// <summary>
@@ -78,18 +80,31 @@ namespace IP3D_Fase3
         }
 
         public void Draw()
-        {
-            foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
+        { bool bulletFlag = false;
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                bulletFlag = true;
+
+            if (bulletFlag)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
                 {
-                    effect.World = Matrix.CreateScale(scale)* Matrix.CreateTranslation(position);
-                    effect.View = camera.view;
-                    effect.Projection = camera.projection;
-                    effect.EnableDefaultLighting();
+                    Matrix world1;
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        world1 = effect.World;
+                        effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
+                        effect.View = camera.view;
+                        effect.Projection = camera.projection;
+                        effect.EnableDefaultLighting();
+                        if (bulletFlag == false)
+                        {
+                            effect.World = this.worldMatrix;
+                        }
+                    }
+                    mesh.Draw();
                 }
-                mesh.Draw();
             }
+       
         }
     }
 }

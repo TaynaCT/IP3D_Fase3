@@ -31,7 +31,7 @@ namespace IP3D_Fase3
         ModelBone lFrontSteer;
 
         // Transformações iniciais
-        // (posicionar torre e canhão)        
+        // (posicionar torre e canhão)
         Matrix cannonTransform;
         Matrix turretTransform;
         Matrix rFrontwheelTransform;
@@ -64,7 +64,7 @@ namespace IP3D_Fase3
             camera = cam;
             terrain = map;
             yaw = 0;
-            bamB = new Bullet(device, content, cam, map, newPlacement);
+
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
 
             float aspectRatio = (float)device.Viewport.Width /
@@ -72,6 +72,7 @@ namespace IP3D_Fase3
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
+            bamB = new Bullet(device, content, cam, map, Position);
             scale = 0.001f;
             myModel = content.Load<Model>("tank");
             worldMatrix = cam.world;
@@ -127,10 +128,10 @@ namespace IP3D_Fase3
                                   (Keyboard.GetState().IsKeyDown(Keys.H) ? 1 : 0)) * -.02f;
                     break;
             }
-                
 
             float directionX = (float)Math.Sin(yaw);
             float directionZ = (float)Math.Cos(yaw);
+
             switch (num)
             {
                 
@@ -188,8 +189,13 @@ namespace IP3D_Fase3
 
         public void Draw()
         {
-            bamB.Draw();
-            // Aplica as transformações em cascata por todos os bones       
+
+
+                bamB.Draw();
+
+
+
+        // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
             cannonBone.Transform = Matrix.CreateRotationX(cannonRotation) * cannonTransform;
@@ -198,7 +204,10 @@ namespace IP3D_Fase3
             lBackWheel.Transform = Matrix.CreateRotationX(wheelRotation) * lBackWheelTransform;
             rBackWheel.Transform = Matrix.CreateRotationX(wheelRotation) * rBackWheelTransform;
 
+
             myModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
+
+
 
             foreach (ModelMesh mesh in myModel.Meshes) // Desenha o modelo
             {
@@ -212,7 +221,13 @@ namespace IP3D_Fase3
                 mesh.Draw();
             }
 
-            boundingSphere.Draw(camera.view, camera.projection);
+          //boundingSphere.Draw(camera.view, camera.projection);
+        }
+
+        public Vector3 Position
+        {
+            get { return position; }
+            set { position = value; }
         }
 
     }
