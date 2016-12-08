@@ -27,11 +27,8 @@ namespace IP3D_Fase3
         bool bulletFlag;
 
 
-<<<<<<< HEAD
-        public Bullet(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector3 pos)
-=======
-        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector2 newPlacement)
->>>>>>> master
+
+        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
         {
             camera = cam;
             terrain = map;
