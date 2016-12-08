@@ -51,14 +51,14 @@ namespace IP3D_Fase3
                 
         Vector3 position;
         
-        Camera camera;
+        CameraSurfaceFollow camera;
         Map terrain;
         
         public Vector2 placement;
         Vector3 direction;
         DrawBoundingSphere boundingSphere;
 
-        public ClsTank(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
+        public ClsTank(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector2 newPlacement)
         {
             placement = newPlacement;
             camera = cam;

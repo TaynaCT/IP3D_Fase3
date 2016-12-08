@@ -24,9 +24,9 @@ namespace IP3D_Fase3
 
         List<Vector3> normalList;
 
-        Camera camera;    
+        CameraSurfaceFollow camera;    
         
-        public Map(GraphicsDevice device, ContentManager content, Camera cam)
+        public Map(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam)
         {
             camera = cam;            
             worldMatrix = cam.world;

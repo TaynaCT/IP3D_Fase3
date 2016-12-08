@@ -16,7 +16,7 @@ namespace IP3D_Fase3
         Matrix worldMatrix;
         Matrix View;
         Matrix Projection;
-        Camera camera;
+        CameraSurfaceFollow camera;
         Map terrain;
         public Vector2 placement;
         Vector3 position, inicialPos;
@@ -27,7 +27,7 @@ namespace IP3D_Fase3
         bool bulletFlag;
 
 
-        public Bullet(GraphicsDevice device, ContentManager content, Camera cam, Map map, Vector2 newPlacement)
+        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector2 newPlacement)
         {
             placement = newPlacement;
             camera = cam;

@@ -15,7 +15,7 @@ namespace IP3D_Fase3
         SpriteBatch spriteBatch;
 
         Map mapa;
-        Camera cam;
+        CameraSurfaceFollow cam;
         ClsTank tank, tank2;
 
         public Game1()
@@ -35,7 +35,7 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
 
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            cam = new Camera(GraphicsDevice);                     
+            cam = new CameraSurfaceFollow(GraphicsDevice);                     
             base.Initialize();
         }
 
