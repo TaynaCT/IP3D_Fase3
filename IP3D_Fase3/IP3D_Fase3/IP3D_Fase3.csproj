@@ -39,12 +39,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="CameraThirdPerson.cs" />
+    <Compile Include="CameraSurfaceFollow.cs" />
     <Compile Include="CameraFree.cs" />
     <Compile Include="ClsTank.cs" />
     <Compile Include="DrawBoundingSphere.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MenuCamera.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -22,6 +22,7 @@ namespace IP3D_Fase3
         public MenuCamera(GraphicsDevice device, Vector3 pos)
         {
             position = pos;
+            Select(device);
         }
 
         public void Select(GraphicsDevice device)
@@ -30,22 +31,35 @@ namespace IP3D_Fase3
             if (Keyboard.GetState().IsKeyDown(Keys.F1))
             {
                 tpCam = new CameraThirdPerson(device, position);
+                projection = tpCam.projection;
+                view = tpCam.view;
             }
             //F2 - seleciona camera com surface follow
-            if (Keyboard.GetState().IsKeyDown(Keys.F2))
+            else if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 sfCam = new CameraSurfaceFollow(device);
+                projection = sfCam.projection;
+                view = sfCam.view;
             }
             //F3 - seleciona camera livre 
-            if (Keyboard.GetState().IsKeyDown(Keys.F3))
+            else if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {
                 freeCam = new CameraFree(device);
+                projection = freeCam.projection;
+                view = freeCam.view;
             }
         }
+        
 
-        public void Update()
+
+        public Matrix Projection
         {
+            get { return projection; }
+        }
 
+        public Matrix View
+        {
+            get { return view; }
         }
 
     }
