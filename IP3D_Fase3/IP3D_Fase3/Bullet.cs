@@ -84,14 +84,21 @@ namespace IP3D_Fase3
         { bool bulletFlag = false;
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 bulletFlag = true;
+            else
+                bulletFlag = false;
 
             if (bulletFlag)
             {
                 foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
                 {
                     Matrix world1;
+
                     foreach (BasicEffect effect in mesh.Effects)
                     {
+                        for (int i = 0; i < 1; i++)
+                        {
+
+                        }
                         world1 = effect.World;
                         effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
                         effect.View = camera.view;
@@ -99,7 +106,7 @@ namespace IP3D_Fase3
                         effect.EnableDefaultLighting();
                         if (bulletFlag == false)
                         {
-                            effect.World = this.worldMatrix;
+                            effect.World = Matrix.Identity;
                         }
                     }
                     mesh.Draw();
