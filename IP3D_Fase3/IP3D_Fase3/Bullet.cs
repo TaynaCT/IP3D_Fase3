@@ -85,7 +85,6 @@ namespace IP3D_Fase3
 
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-
                         world1 = effect.World;
                         effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
                         effect.View = camera.view;

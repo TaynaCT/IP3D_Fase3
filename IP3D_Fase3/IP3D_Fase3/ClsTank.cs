@@ -185,8 +185,9 @@ namespace IP3D_Fase3
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                bamB.BulletFlag = true;
                 bamB = new Bullet(device, content, camera, terrain, Position);
+                bamB.BulletFlag = true;
+                bamB.bulletUpdate(gameTime);
                 
             }
 
