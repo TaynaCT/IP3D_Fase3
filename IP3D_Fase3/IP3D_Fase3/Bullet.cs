@@ -48,14 +48,14 @@ namespace IP3D_Fase3
             Projection = cam.projection;
         }
         
-        public void bulletUpdate(GameTime gameTime)
+        public void bulletUpdate(GameTime gameTime,float x, float z)
         {
             float gravity = 0;
             if (bulletFlag)
             {
-                position += new Vector3(1, gravity, 1) * 0.01f;
-                Trajectory(gameTime);
                 gravity -= 0.3f;
+                position += new Vector3(1, gravity, 1) * 0.04f;
+                Trajectory(gameTime);
             }
                      
         }
