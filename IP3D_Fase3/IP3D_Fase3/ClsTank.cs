@@ -186,12 +186,7 @@ namespace IP3D_Fase3
             }
 
             if(bamB != null && bamB.BulletFlag)
-                bamB.bulletUpdate(gameTime,1f,1f);
-
-
-            if (bamB != null && bamB.BulletFlag)
-                bamB.bulletUpdate(gameTime);
-
+                bamB.bulletUpdate(gameTime, directionX, directionZ);
 
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
             rotation = Matrix.Identity;
