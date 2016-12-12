@@ -62,12 +62,12 @@ namespace IP3D_Fase3
         /// <param name="inicialPos"></param>
         /// <param name="finalPos"></param>
         /// <returns></returns>
-        public bool Collision(Vector3 inicialPos, Vector3 finalPos)
+        public bool Collision(Vector3 inicialPos, Vector3 v0, Vector3 acceleration, GameTime gameTime)
         {
             // final pos
             //x = xo + vo t + ½ a t2
-            //Vector3 finalPos;
-           // finalPos = inicialPos+ v0 + 
+            Vector3 finalPos;
+            finalPos = inicialPos + v0 + (1 / 2) * acceleration * (float)Math.Pow(gameTime.ElapsedGameTime.TotalSeconds, 2);
 
             //distancia entre o centro da merging sphere e a posição inical da bala
             float a = Math.Abs((mergingSphere.Center.X - finalPos.X) + (mergingSphere.Center.Y - finalPos.Y) + (mergingSphere.Center.Z - finalPos.Z));
@@ -88,8 +88,7 @@ namespace IP3D_Fase3
                 return true;
             else
                 return false;
-
-            
+                      
         }
 
         public void Draw(Matrix view, Matrix projection)
