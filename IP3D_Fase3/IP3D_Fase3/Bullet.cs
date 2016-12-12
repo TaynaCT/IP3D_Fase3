@@ -49,19 +49,15 @@ namespace IP3D_Fase3
         }
         
         public void bulletUpdate(GameTime gameTime)
-        {              float gravity = 0;
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            float gravity = 0;
+            if (bulletFlag)
             {
-                bulletFlag = true;
-  
+                position += new Vector3(1, gravity, 1) * 0.01f;
+                Trajectory(gameTime);
                 gravity -= 0.3f;
             }
-
-            if (bulletFlag)
-            { 
-                position += new Vector3(1,gravity, 1) * 0.01f;
-                Trajectory(gameTime);
-            }
+                     
         }
 
         /// <summary>
@@ -80,12 +76,7 @@ namespace IP3D_Fase3
         }
 
         public void Draw()
-        { bool bulletFlag = false;
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                bulletFlag = true;
-            else
-                bulletFlag = false;
-
+        {
             if (bulletFlag)
             {
                 foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
@@ -109,6 +100,12 @@ namespace IP3D_Fase3
                 }
             }
        
+        }
+        
+        public bool BulletFlag
+        {
+            get { return bulletFlag; }
+            set { bulletFlag = value; }
         }
     }
 }

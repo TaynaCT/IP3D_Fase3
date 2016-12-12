@@ -58,13 +58,17 @@ namespace IP3D_Fase3
         Vector3 direction;
         DrawBoundingSphere boundingSphere;
 
+        ContentManager content;
+        GraphicsDevice device;
+
         public ClsTank(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector2 newPlacement)
         {
             placement = newPlacement;
             camera = cam;
             terrain = map;
             yaw = 0;
-
+            this.content = content;
+            this.device = device;
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
 
             float aspectRatio = (float)device.Viewport.Width /
@@ -72,7 +76,7 @@ namespace IP3D_Fase3
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
-            bamB = new Bullet(device, content, cam, map, Position);
+            // bamB = new Bullet(device, content, cam, map, Position);
             scale = 0.001f;
             myModel = content.Load<Model>("tank");
             worldMatrix = cam.world;
@@ -109,7 +113,7 @@ namespace IP3D_Fase3
 
         public void Update(int num, GameTime gameTime)
         {
-            bamB.bulletUpdate(gameTime);
+            
 
             switch (num)
             {
@@ -179,6 +183,12 @@ namespace IP3D_Fase3
                         yaw -= .05f;
                     break;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                bamB.BulletFlag = true;
+                bamB = new Bullet(device, content, camera, terrain, Position);
+                
+            }
 
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
             rotation = Matrix.Identity;
@@ -190,12 +200,6 @@ namespace IP3D_Fase3
 
         public void Draw()
         {
-
-
-            bamB.Draw();
-
-
-
         // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
@@ -204,12 +208,9 @@ namespace IP3D_Fase3
             lFrontWheel.Transform = Matrix.CreateRotationX(wheelRotation) * lFrontWheelTransform;
             lBackWheel.Transform = Matrix.CreateRotationX(wheelRotation) * lBackWheelTransform;
             rBackWheel.Transform = Matrix.CreateRotationX(wheelRotation) * rBackWheelTransform;
-
-
+            
             myModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
-
-
-
+                        
             foreach (ModelMesh mesh in myModel.Meshes) // Desenha o modelo
             {
                 foreach (BasicEffect effect in mesh.Effects)
@@ -222,7 +223,10 @@ namespace IP3D_Fase3
                 mesh.Draw();
             }
 
-          //boundingSphere.Draw(camera.view, camera.projection);
+            if (bamB.BulletFlag!= false)
+                bamB.Draw();
+          
+
         }
 
         public Vector3 Position
