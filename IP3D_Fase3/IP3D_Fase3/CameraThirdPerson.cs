@@ -56,24 +56,11 @@ namespace IP3D_Fase3
 
             direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(Vector3.Up, -mouseRotation.X));
             direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(cameraDirection, -mouseRotation.Y));
-                                    
+
             target = direction + position;
 
-            //movimentação da camera 
-            /*
-             * 8 - frente
-             * 5 - para trás
-             * 4 - esquerda
-             * 6 - direita
-             */
-            //é acrescentado a posição de acordo com a verificação de qual tecla foi acionada.
-            //se for a tecla 6 a soma fica: position += cameraRight * timePassed;
-            //se for 4: position += -cameraRight * timePassed;
-            //o mesmo para verificação das teclas 8 e 5, so que nesse caso é somado a variavel direction
-            if (surfaceFollow == -1)
-                position = lastPos;
-
-            
+        }
+                    
         public Matrix View()
         {
             view = Matrix.CreateLookAt(position, target, Vector3.Up);

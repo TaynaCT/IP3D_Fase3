@@ -96,7 +96,7 @@ namespace IP3D_Fase3
             switch (option)
             {
                 case 1:
-                    tpCam.Update(centre, timePassed, surfaceFollow);
+                    tpCam.Update(position);
                     break;
                 case 2:
                     sfCam.Update(centre, timePassed, surfaceFollow);
