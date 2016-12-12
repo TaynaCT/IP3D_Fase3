@@ -57,19 +57,36 @@ namespace IP3D_Fase3
             switch (option)
             {
                 case 1:
-                tpCam = new CameraThirdPerson(device, position);
-                projection = tpCam.projection;
-                view = tpCam.view;
+                    if(tpCam == null)
+                        tpCam = new CameraThirdPerson(device, position);
+                    
+                    projection = tpCam.projection;
+                    view = tpCam.view;
+
+                    sfCam = null;
+                    freeCam = null;
                 break;
+
                 case 2:
-                    sfCam = new CameraSurfaceFollow(device);
-                projection = sfCam.projection;
-                view = sfCam.view;
+                    if(sfCam == null)
+                        sfCam = new CameraSurfaceFollow(device);
+
+                    projection = sfCam.projection;
+                    view = sfCam.view;
+
+                    tpCam = null;
+                    freeCam = null;
                 break;
+
                 case 3:
-                    freeCam = new CameraFree(device);
-                projection = freeCam.projection;
-                view = freeCam.view;
+                    if(freeCam == null)
+                        freeCam = new CameraFree(device);
+                    
+                    projection = freeCam.projection;
+                    view = freeCam.view;
+
+                    tpCam = null;
+                    freeCam = null;
                 break;
             }
         }
@@ -98,6 +115,12 @@ namespace IP3D_Fase3
         public Matrix View
         {
             get { return view; }
+        }
+
+        public Vector3 Position
+        {
+            get { return position; }
+            set { position = value; }
         }
 
     }

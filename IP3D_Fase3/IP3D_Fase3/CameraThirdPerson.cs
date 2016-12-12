@@ -47,7 +47,7 @@ namespace IP3D_Fase3
             
         }
 
-        public void Update(Point centre, float timePassed, float surfaceFollow)
+        public void Update(Vector3 tankPos)
         {
             Vector3 lastPos = position;
             //rotação 
@@ -56,9 +56,7 @@ namespace IP3D_Fase3
 
             direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(Vector3.Up, -mouseRotation.X));
             direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(cameraDirection, -mouseRotation.Y));
-
-            position.Y = surfaceFollow + .5f;
-            
+                                    
             target = direction + position;
 
             //movimentação da camera 
@@ -75,19 +73,7 @@ namespace IP3D_Fase3
             if (surfaceFollow == -1)
                 position = lastPos;
 
-            position += ((Keyboard.GetState().IsKeyDown(Keys.NumPad6) ? 1 : 0) -
-                         (Keyboard.GetState().IsKeyDown(Keys.NumPad4) ? 1 : 0)) * cameraDirection * .02f;            
-
-            position += ((Keyboard.GetState().IsKeyDown(Keys.NumPad8) ? 1 : 0) -
-                         (Keyboard.GetState().IsKeyDown(Keys.NumPad5) ? 1 : 0)) * direction * .02f;
-
-            try
-            {
-                Mouse.SetPosition(centre.X, centre.Y); // mantem o o ponteiro dentro da janela do jogo
-            }
-            catch (Exception) { }
-        }        
-
+            
         public Matrix View()
         {
             view = Matrix.CreateLookAt(position, target, Vector3.Up);
