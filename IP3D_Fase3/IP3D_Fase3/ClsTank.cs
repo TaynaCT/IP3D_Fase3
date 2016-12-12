@@ -184,7 +184,8 @@ namespace IP3D_Fase3
                     bamB = new Bullet(device, content, camera, terrain, Position);
                 bamB.BulletFlag = true;
             }
-            if(bamB != null && bamB.BulletFlag)
+
+            if (bamB != null && bamB.BulletFlag)
                 bamB.bulletUpdate(gameTime);
 
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
