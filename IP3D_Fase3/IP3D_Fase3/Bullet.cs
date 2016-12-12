@@ -54,7 +54,7 @@ namespace IP3D_Fase3
             if (bulletFlag)
             {
                 gravity -= 0.3f;
-                position += new Vector3(1, gravity, 1) * 0.04f;
+                position += new Vector3(x, gravity, z) * 0.04f;
                 Trajectory(gameTime);
             }
                      
