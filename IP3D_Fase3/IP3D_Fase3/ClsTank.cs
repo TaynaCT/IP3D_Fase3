@@ -113,8 +113,6 @@ namespace IP3D_Fase3
 
         public void Update(int num, GameTime gameTime)
         {
-            
-
             switch (num)
             {
                 case 1:
@@ -138,8 +136,6 @@ namespace IP3D_Fase3
 
             switch (num)
             {
-                
-
                 case 1:
                     //andar com o tank
                     if (Keyboard.GetState().IsKeyDown(Keys.W))
@@ -152,7 +148,6 @@ namespace IP3D_Fase3
                         position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                         wheelRotation -= .2f;
                     }
-
 
                     //rodar o tanque
                     if (Keyboard.GetState().IsKeyDown(Keys.A))
@@ -185,11 +180,12 @@ namespace IP3D_Fase3
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                bamB = new Bullet(device, content, camera, terrain, Position);
+                if (bamB == null)
+                    bamB = new Bullet(device, content, camera, terrain, Position);
                 bamB.BulletFlag = true;
-                bamB.bulletUpdate(gameTime);
-                
             }
+            if(bamB != null && bamB.BulletFlag)
+                bamB.bulletUpdate(gameTime);
 
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
             rotation = Matrix.Identity;
@@ -224,7 +220,7 @@ namespace IP3D_Fase3
                 mesh.Draw();
             }
 
-            if (bamB.BulletFlag!= false)
+            if (bamB!= null && bamB.BulletFlag) 
                 bamB.Draw();
           
 

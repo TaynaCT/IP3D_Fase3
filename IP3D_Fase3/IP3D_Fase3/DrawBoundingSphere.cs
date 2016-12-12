@@ -64,6 +64,11 @@ namespace IP3D_Fase3
         /// <returns></returns>
         public bool Collision(Vector3 inicialPos, Vector3 finalPos)
         {
+            // final pos
+            //x = xo + vo t + ½ a t2
+            //Vector3 finalPos;
+           // finalPos = inicialPos+ v0 + 
+
             //distancia entre o centro da merging sphere e a posição inical da bala
             float a = Math.Abs((mergingSphere.Center.X - finalPos.X) + (mergingSphere.Center.Y - finalPos.Y) + (mergingSphere.Center.Z - finalPos.Z));
             //distancia entre o centro da merging sphere e a posição inical da bala
