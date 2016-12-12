@@ -48,6 +48,7 @@ namespace IP3D_Fase3
         float cannonRotation;
         float wheelRotation;
         float yaw;
+        float dx, dz;
                 
         Vector3 position;
         
@@ -178,6 +179,13 @@ namespace IP3D_Fase3
                         yaw -= .05f;
                     break;
             }
+
+            while (bamB.BulletFlag == false)
+            {
+                dx = directionX;
+                dz = directionZ;
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 if (bamB == null)
@@ -186,7 +194,7 @@ namespace IP3D_Fase3
             }
 
             if(bamB != null && bamB.BulletFlag)
-                bamB.bulletUpdate(gameTime, directionX, directionZ);
+                bamB.bulletUpdate(gameTime, dx, dz);
 
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
             rotation = Matrix.Identity;
@@ -235,4 +243,3 @@ namespace IP3D_Fase3
 
     }
 }
- 
