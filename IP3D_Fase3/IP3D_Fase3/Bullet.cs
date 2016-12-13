@@ -16,7 +16,7 @@ namespace IP3D_Fase3
         Matrix worldMatrix;
         Matrix View;
         Matrix Projection;
-        CameraSurfaceFollow camera;
+       
         Map terrain;
         public Vector2 placement;
         Vector3 position, inicialPos;
@@ -26,26 +26,29 @@ namespace IP3D_Fase3
         public float yaw = 0;
         bool bulletFlag;
 
+        MenuCamera cameras;
 
-        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
+        public Bullet(GraphicsDevice device, ContentManager content, MenuCamera cam, Map map, Vector3 pos)
         {
-            camera = cam;
+            cameras = cam;
             terrain = map;
             myBullet = content.Load<Model>("Cube");
             bulletFlag = false;
 
-            //direction
-            float aspectRatio = (float)device.Viewport.Width /
-                                      device.Viewport.Height;
+            ////direction
+            //float aspectRatio = (float)device.Viewport.Width /
+            //                          device.Viewport.Height;
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = pos;
             inicialPos = position;
             scale = 0.09f;
 
-            worldMatrix = cam.world;
-            View = cam.view;
-            Projection = cam.projection;
+            cam = new MenuCamera(device);
+
+            worldMatrix = cameras.World;
+            View = cameras.View;
+            Projection = cameras.Projection;
         }
         
         public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -57,6 +60,8 @@ namespace IP3D_Fase3
                 position += new Vector3(x, gravity, z) * 0.04f;
                 Trajectory(gameTime);
             }
+
+           
                      
         }
 
@@ -87,8 +92,8 @@ namespace IP3D_Fase3
                     {
                         world1 = effect.World;
                         effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
-                        effect.View = camera.view;
-                        effect.Projection = camera.projection;
+                        effect.View = cameras.View;
+                        effect.Projection = cameras.Projection;
                         effect.EnableDefaultLighting();
                         if (bulletFlag == false)
                         {

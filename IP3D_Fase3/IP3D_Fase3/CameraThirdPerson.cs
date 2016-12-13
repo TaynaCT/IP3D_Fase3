@@ -47,15 +47,15 @@ namespace IP3D_Fase3
             
         }
 
-        public void Update(Vector3 tankPos)
+        public void Update(Vector3 tankPos, Vector3 target)
         {
             Vector3 lastPos = position;
             //rotação 
-            Vector2 mouseRotation = (Mouse.GetState().Position - centre).ToVector2() * speed * timePassed;
+            //Vector2 mouseRotation = (Mouse.GetState().Position - centre).ToVector2() * speed * timePassed;
             Vector3 cameraDirection = Vector3.Cross(direction, Vector3.Up);// O cross dos dois vetores devolve o vetor direção para a qual a camera deve se mover           
 
-            direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(Vector3.Up, -mouseRotation.X));
-            direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(cameraDirection, -mouseRotation.Y));
+           // direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(Vector3.Up, -mouseRotation.X));
+           // direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(cameraDirection, -mouseRotation.Y));
 
             target = direction + position;
 

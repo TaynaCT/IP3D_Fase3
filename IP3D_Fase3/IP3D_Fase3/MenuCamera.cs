@@ -14,7 +14,9 @@ namespace IP3D_Fase3
         GraphicsDevice device;
         Matrix projection;
         Matrix view;
+        Matrix world;
         Vector3 position;
+        BasicEffect effect;
 
         CameraFree freeCam;
         CameraSurfaceFollow sfCam;
@@ -26,6 +28,15 @@ namespace IP3D_Fase3
         {
             this.device = device;
             position = pos;
+            option = 1;
+            Select();
+            SwitchOption();
+        }
+
+        public MenuCamera(GraphicsDevice device)
+        {
+            this.device = device;
+            
             option = 1;
             Select();
             SwitchOption();
@@ -62,6 +73,8 @@ namespace IP3D_Fase3
                     
                     projection = tpCam.projection;
                     view = tpCam.view;
+                    world = tpCam.world;
+                    effect = tpCam.effect;
 
                     sfCam = null;
                     freeCam = null;
@@ -73,6 +86,8 @@ namespace IP3D_Fase3
 
                     projection = sfCam.projection;
                     view = sfCam.view;
+                    world = sfCam.world;
+                    effect = sfCam.effect;
 
                     tpCam = null;
                     freeCam = null;
@@ -84,6 +99,8 @@ namespace IP3D_Fase3
                     
                     projection = freeCam.projection;
                     view = freeCam.view;
+                    world = freeCam.world;
+                    effect = freeCam.effect;
 
                     tpCam = null;
                     freeCam = null;
@@ -91,12 +108,12 @@ namespace IP3D_Fase3
             }
         }
         
-        public void Update(Point centre, float timePassed, float surfaceFollow)
+        public void Update(Point centre, float timePassed, float surfaceFollow, Vector3 target)
         {
             switch (option)
             {
                 case 1:
-                    tpCam.Update(position);
+                    tpCam.Update(position, target);
                     break;
                 case 2:
                     sfCam.Update(centre, timePassed, surfaceFollow);
@@ -117,11 +134,22 @@ namespace IP3D_Fase3
             get { return view; }
         }
 
+        public Matrix World
+        {
+            get { return world; }
+        }
+
+        public BasicEffect Effect
+        {
+            get { return effect; }
+        }
+
         public Vector3 Position
         {
             get { return position; }
             set { position = value; }
         }
+
 
     }
 }

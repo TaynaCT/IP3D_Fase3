@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 namespace IP3D_Fase3
 {
     class ClsTank
-    {
-       
+    {       
         Model myModel;
         Matrix worldMatrix;
         Matrix View;
@@ -51,8 +50,10 @@ namespace IP3D_Fase3
         float dx, dz;
                 
         Vector3 position;
-        
-        CameraSurfaceFollow camera;
+        Vector3 target;
+
+        //CameraSurfaceFollow camera;
+        MenuCamera cameras;
         Map terrain;
         
         public Vector2 placement;
@@ -62,27 +63,30 @@ namespace IP3D_Fase3
         ContentManager content;
         GraphicsDevice device;
 
-        public ClsTank(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector2 newPlacement)
+        public ClsTank(GraphicsDevice device, ContentManager content, MenuCamera cameras, Map map, Vector2 newPlacement)
         {
-            placement = newPlacement;
-            camera = cam;
+            this.cameras = cameras;            
+
+            placement = newPlacement;            
             terrain = map;
             yaw = 0;
             this.content = content;
             this.device = device;
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
 
-            float aspectRatio = (float)device.Viewport.Width /
-                                       device.Viewport.Height;
+            //float aspectRatio = (float)device.Viewport.Width /
+            //                           device.Viewport.Height;
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
-            // bamB = new Bullet(device, content, cam, map, Position);
+            cameras = new MenuCamera(device, position);
+            cameras.SwitchOption();
+
             scale = 0.001f;
             myModel = content.Load<Model>("tank");
-            worldMatrix = cam.world;
-            View = cam.view;
-            Projection = cam.projection;
+            worldMatrix = cameras.World;
+            View = cameras.View;
+            Projection = cameras.Projection;
            
             // Lê os bones
             turretBone = myModel.Bones["turret_geo"];//torre
@@ -180,28 +184,36 @@ namespace IP3D_Fase3
                     break;
             }
 
-            while (bamB.BulletFlag == false)
+            if (bamB != null)
             {
-                dx = directionX;
-                dz = directionZ;
+                while (bamB.BulletFlag == false)
+                {
+                    dx = directionX;
+                    dz = directionZ;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 if (bamB == null)
-                    bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0,0.3f,0));
+                    bamB = new Bullet(device, content, cameras, terrain, Position + new Vector3(0,0.3f,0));
                 bamB.BulletFlag = true;
             }
 
             if(bamB != null && bamB.BulletFlag)
                 bamB.bulletUpdate(gameTime, dx, dz);
 
+            //põe o tank em cima do terreno
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
+
+            //direciona o tank
             rotation = Matrix.Identity;
             rotation.Up = terrain.NormalFollow(position.X, position.Z);
             Vector3 horizontalDirection = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromAxisAngle(rotation.Up, yaw));
             rotation.Right = Vector3.Normalize(Vector3.Cross(horizontalDirection, rotation.Up));
             rotation.Forward = Vector3.Normalize(Vector3.Cross(rotation.Up, rotation.Right));
+
+            target = rotation.Forward;
         }
 
         public void Draw()
@@ -222,8 +234,8 @@ namespace IP3D_Fase3
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.World = boneTransforms[mesh.ParentBone.Index];
-                    effect.View = camera.view;
-                    effect.Projection = camera.projection;
+                    effect.View = cameras.View;
+                    effect.Projection = cameras.Projection;
                     effect.EnableDefaultLighting();
                 }
                 mesh.Draw();
@@ -231,14 +243,17 @@ namespace IP3D_Fase3
 
             if (bamB!= null && bamB.BulletFlag) 
                 bamB.Draw();
-          
-
         }
 
         public Vector3 Position
         {
             get { return position; }
             set { position = value; }
+        }        
+
+        public Vector3 Target
+        {
+            get { return target; }
         }
 
     }

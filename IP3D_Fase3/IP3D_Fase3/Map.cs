@@ -24,14 +24,13 @@ namespace IP3D_Fase3
 
         List<Vector3> normalList;
 
-        CameraSurfaceFollow camera;    
+        MenuCamera cameras;  
         
-        public Map(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam)
+        public Map(GraphicsDevice device, ContentManager content, MenuCamera cam)
         {
-            camera = cam;            
-            worldMatrix = cam.world;
-            effect = cam.effect;
-
+            cameras = cam;
+            cameras = new MenuCamera(device);
+            effect = cameras.Effect;
             //textura do mapa
             groundTexture = content.Load<Texture2D>("grassTexture");
             effect.TextureEnabled = true;
@@ -39,10 +38,12 @@ namespace IP3D_Fase3
 
             normalList = new List<Vector3>();
 
-            float aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
+            //float aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
+
+            worldMatrix = cameras.World;
            
-            effect.View = cam.view;
-            effect.Projection = cam.projection;
+            effect.View = cameras.View;
+            effect.Projection = cameras.Projection;
 
             //effects relacionados as luzes
             effect.EnableDefaultLighting();// ativa a luz 
@@ -322,8 +323,8 @@ namespace IP3D_Fase3
         }     
 
         public void Draw(GraphicsDevice device) 
-        {           
-            effect.View = camera.View();
+        {
+            effect.View = cameras.View;
             effect.World = worldMatrix;            
             effect.CurrentTechnique.Passes[0].Apply();
             device.SetVertexBuffer(vertexBuffer);

@@ -15,7 +15,7 @@ namespace IP3D_Fase3
         SpriteBatch spriteBatch;
 
         Map mapa;
-        CameraSurfaceFollow cam;
+        MenuCamera cameras;
         ClsTank tank, tank2;
 
         public Game1()
@@ -35,7 +35,7 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
 
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            cam = new CameraSurfaceFollow(GraphicsDevice);                     
+            cameras = new MenuCamera(GraphicsDevice);                  
             base.Initialize();
         }
 
@@ -47,9 +47,9 @@ namespace IP3D_Fase3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mapa = new Map(GraphicsDevice, Content, cam);
-            tank = new ClsTank(GraphicsDevice, Content, cam, mapa, new Vector2(10, 10));
-            tank2 = new ClsTank(GraphicsDevice, Content, cam, mapa, new Vector2(10, 9));
+            mapa = new Map(GraphicsDevice, Content, cameras);
+            tank = new ClsTank(GraphicsDevice, Content, cameras, mapa, new Vector2(10, 10));
+            tank2 = new ClsTank(GraphicsDevice, Content, cameras, mapa, new Vector2(10, 9));
             
             // TODO: use this.Content to load your game content here
         }
@@ -73,8 +73,10 @@ namespace IP3D_Fase3
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            cam.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cam.position.X, cam.position.Z));
-            cam.View();
+            cameras.Select();
+            cameras.SwitchOption();
+            cameras.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cameras.Position.X, cameras.Position.Z), tank.Target);
+            
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
             // TODO: Add your update logic here
