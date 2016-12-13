@@ -51,9 +51,7 @@ namespace IP3D_Fase3
                 
         Vector3 position;
         Vector3 target;
-
-        //CameraSurfaceFollow camera;
-        MenuCamera cameras;
+        
         Map terrain;
         
         public Vector2 placement;
@@ -63,10 +61,8 @@ namespace IP3D_Fase3
         ContentManager content;
         GraphicsDevice device;
 
-        public ClsTank(GraphicsDevice device, ContentManager content, MenuCamera cameras, Map map, Vector2 newPlacement)
-        {
-            this.cameras = cameras;            
-
+        public ClsTank(GraphicsDevice device, ContentManager content, Map map, Vector2 newPlacement, Matrix world, Matrix view, Matrix projection)
+        {          
             placement = newPlacement;            
             terrain = map;
             yaw = 0;
@@ -79,14 +75,12 @@ namespace IP3D_Fase3
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
-            cameras = new MenuCamera(device, position);
-            cameras.SwitchOption();
-
+            
             scale = 0.001f;
             myModel = content.Load<Model>("tank");
-            worldMatrix = cameras.World;
-            View = cameras.View;
-            Projection = cameras.Projection;
+            worldMatrix = world;
+            View = view;
+            Projection = projection;
            
             // Lê os bones
             turretBone = myModel.Bones["turret_geo"];//torre
@@ -117,7 +111,7 @@ namespace IP3D_Fase3
         }
 
         public void Update(int num, GameTime gameTime)
-        {
+        {         
             switch (num)
             {
                 case 1:
@@ -196,7 +190,7 @@ namespace IP3D_Fase3
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 if (bamB == null)
-                    bamB = new Bullet(device, content, cameras, terrain, Position + new Vector3(0,0.3f,0));
+                    bamB = new Bullet(device, content, terrain, Position + new Vector3(0,0.3f,0), worldMatrix, View, Projection);
                 bamB.BulletFlag = true;
             }
 
@@ -216,7 +210,7 @@ namespace IP3D_Fase3
             target = rotation.Forward;
         }
 
-        public void Draw()
+        public void Draw(Matrix view, Matrix projection)
         {
         // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
@@ -234,15 +228,15 @@ namespace IP3D_Fase3
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.World = boneTransforms[mesh.ParentBone.Index];
-                    effect.View = cameras.View;
-                    effect.Projection = cameras.Projection;
+                    effect.View = view;
+                    effect.Projection = projection;
                     effect.EnableDefaultLighting();
                 }
                 mesh.Draw();
             }
 
             if (bamB!= null && bamB.BulletFlag) 
-                bamB.Draw();
+                bamB.Draw(View, Projection);
         }
 
         public Vector3 Position
