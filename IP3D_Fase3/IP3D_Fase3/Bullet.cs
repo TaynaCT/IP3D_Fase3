@@ -25,10 +25,12 @@ namespace IP3D_Fase3
         public float height;
         public float yaw = 0;
         bool bulletFlag;
-               
-        public Bullet(GraphicsDevice device, ContentManager content, Map map, Vector3 pos, Matrix world, Matrix view, Matrix projection)
+
+        MenuCamera cameras;
+
+        public Bullet(GraphicsDevice device, ContentManager content, MenuCamera cam, Map map, Vector3 pos)
         {
-            
+            cameras = cam;
             terrain = map;
             myBullet = content.Load<Model>("Cube");
             bulletFlag = false;
@@ -42,9 +44,11 @@ namespace IP3D_Fase3
             inicialPos = position;
             scale = 0.09f;
 
-            worldMatrix = world;
-            View = view;
-            Projection = projection;
+            cam = new MenuCamera(device);
+
+            worldMatrix = cameras.World;
+            View = cameras.View;
+            Projection = cameras.Projection;
         }
         
         public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -76,7 +80,7 @@ namespace IP3D_Fase3
             return finalPos;
         }
 
-        public void Draw(Matrix view, Matrix projection)
+        public void Draw()
         {
             if (bulletFlag)
             {
@@ -88,8 +92,8 @@ namespace IP3D_Fase3
                     {
                         world1 = effect.World;
                         effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
-                        effect.View = view;
-                        effect.Projection = projection;
+                        effect.View = cameras.View;
+                        effect.Projection = cameras.Projection;
                         effect.EnableDefaultLighting();
                         if (bulletFlag == false)
                         {
