@@ -47,7 +47,6 @@ namespace IP3D_Fase3
         float cannonRotation;
         float wheelRotation;
         float yaw;
-        float dx, dz;
                 
         Vector3 position;
         Vector3 target;
@@ -184,13 +183,10 @@ namespace IP3D_Fase3
                     break;
             }
 
-            if (bamB != null)
+            while (bamB.BulletFlag == false)
             {
-                while (bamB.BulletFlag == false)
-                {
-                    dx = directionX;
-                    dz = directionZ;
-                }
+                dx = directionX;
+                dz = directionZ;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
@@ -201,7 +197,7 @@ namespace IP3D_Fase3
             }
 
             if(bamB != null && bamB.BulletFlag)
-                bamB.bulletUpdate(gameTime, dx, dz);
+                bamB.bulletUpdate(gameTime, directionX, directionZ);
 
             //põe o tank em cima do terreno
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
@@ -258,3 +254,4 @@ namespace IP3D_Fase3
 
     }
 }
+ 
