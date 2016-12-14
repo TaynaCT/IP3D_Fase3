@@ -13,8 +13,7 @@ namespace IP3D_Fase3
     class Particle
     {
         BasicEffect effect;
-        
-        
+                
         public VertexPositionColor[] drop;
         float radius;
         float distance;

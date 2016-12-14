@@ -16,21 +16,22 @@ namespace IP3D_Fase3
         Color[] texels;
         Texture2D texture;
         Texture2D groundTexture;
-        public VertexPositionNormalTexture[] vertex;               
-        
+        public VertexPositionNormalTexture[] vertex;
+
         short[] index;
         VertexBuffer vertexBuffer;
         IndexBuffer indexBuffer;
 
         List<Vector3> normalList;
 
-        MenuCamera cameras;  
-        
-        public Map(GraphicsDevice device, ContentManager content, MenuCamera cam)
+        CameraSurfaceFollow camera;
+
+        public Map(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam)
         {
-            cameras = cam;
-            cameras = new MenuCamera(device);
-            effect = cameras.Effect;
+            camera = cam;
+            worldMatrix = cam.world;
+            effect = cam.effect;
+
             //textura do mapa
             groundTexture = content.Load<Texture2D>("grassTexture");
             effect.TextureEnabled = true;
@@ -38,12 +39,10 @@ namespace IP3D_Fase3
 
             normalList = new List<Vector3>();
 
-            //float aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
+            float aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
 
-            worldMatrix = cameras.World;
-           
-            effect.View = cameras.View;
-            effect.Projection = cameras.Projection;
+            effect.View = cam.view;
+            effect.Projection = cam.projection;
 
             //effects relacionados as luzes
             effect.EnableDefaultLighting();// ativa a luz 
@@ -53,12 +52,12 @@ namespace IP3D_Fase3
             effect.DirectionalLight0.DiffuseColor = new Vector3(1f, 1f, 1f);
             effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(1f, -1f, 0f));
             //effect.DirectionalLight0.SpecularColor = new Vector3(2f, 0f, 2f);    
-                  
+
             effect.VertexColorEnabled = false;
 
             //Indexação dos vertices do mapa, a partir dos valores rgb da textura
             texture = content.Load<Texture2D>("lh3d1");
-            texels = new Color[texture.Height*texture.Width]; // tamanho do array =  altura *  largura da img
+            texels = new Color[texture.Height * texture.Width]; // tamanho do array =  altura *  largura da img
             texture.GetData(texels);
             vertex = new VertexPositionNormalTexture[texels.Length];
 
@@ -69,7 +68,7 @@ namespace IP3D_Fase3
                 for (int x = 0; x < texture.Width; x++)
                 {
                     y = (texels[z * texture.Width + x].R);
-                    vertex[z * texture.Width + x] = new VertexPositionNormalTexture(new Vector3(x, y * .04f, z),Vector3.Up, new Vector2(x%2, z%2));
+                    vertex[z * texture.Width + x] = new VertexPositionNormalTexture(new Vector3(x, y * .04f, z), Vector3.Up, new Vector2(x % 2, z % 2));
                 }
             }
 
@@ -96,7 +95,7 @@ namespace IP3D_Fase3
                         aux--;
                     }
                 }
-            }        
+            }
 
             vertexBuffer = new VertexBuffer(device,
                 typeof(VertexPositionNormalTexture),
@@ -110,15 +109,15 @@ namespace IP3D_Fase3
                 index.Length,
                 BufferUsage.None);
             indexBuffer.SetData(index);
-            Normals();            
+            Normals();
         }
-       
+
         /// <summary>
         /// calcula a normal de cada vertice no plano
         /// gera as normais
         /// </summary>
         public void Normals()
-        {            
+        {
             Vector3 normalVertex = new Vector3();
 
             //Declaração das normais no centro do mapa
@@ -222,10 +221,10 @@ namespace IP3D_Fase3
             }
 
             //vertices do centro do terreno
-            for (int z = 1; z < texture.Height-2; z++)
+            for (int z = 1; z < texture.Height - 2; z++)
             {
                 for (int x = 1; x < texture.Width - 2; x++)
-                {                    
+                {
                     normalList.Add(Vector3.Cross(vertex[(z - 1) * texture.Width + x].Position - vertex[z * texture.Width + x].Position,
                                                  vertex[(z - 1) * texture.Width + x - 1].Position - vertex[z * texture.Width + x].Position));
 
@@ -248,7 +247,7 @@ namespace IP3D_Fase3
                                                  vertex[(z - 1) * texture.Width + x + 1].Position - vertex[z * texture.Width + x].Position));
 
                     normalList.Add(Vector3.Cross(vertex[(z - 1) * texture.Width + x + 1].Position - vertex[z * texture.Width + x].Position,
-                                                 vertex[(z - 1) * texture.Width + x].Position - vertex[z * texture.Width + x].Position));                    
+                                                 vertex[(z - 1) * texture.Width + x].Position - vertex[z * texture.Width + x].Position));
 
                     //soma das normais do vertice atual
                     foreach (Vector3 normal in normalList)
@@ -259,11 +258,11 @@ namespace IP3D_Fase3
                     //calcula a media das nomais no vertice.
                     normalVertex /= normalList.Count;
 
-                    vertex[z * texture.Width + x].Normal = normalVertex;                    
+                    vertex[z * texture.Width + x].Normal = normalVertex;
 
                     normalList.Clear();
-                    
-                }                    
+
+                }
             }
         }
 
@@ -282,11 +281,11 @@ namespace IP3D_Fase3
 
             //verifica se está dentro dos limites  do mapa
             if ((xMin < 0) || (zMin < 0) || (xMax > texture.Width) || (zMax > texture.Height))
-                return -1 ;
+                return -1;
 
             Vector3 p1 = new Vector3(xMin, vertex[zMax * texture.Width + xMin].Position.Y, zMax);
             Vector3 p2 = new Vector3(xMax, vertex[zMin * texture.Width + xMax].Position.Y, zMin);
-            Vector3 p3; 
+            Vector3 p3;
 
             if ((x - xMin) + (z - zMin) <= 1)
                 p3 = new Vector3(xMin, vertex[zMin * texture.Width + xMin].Position.Y, zMin);
@@ -315,23 +314,23 @@ namespace IP3D_Fase3
             //verifica se está dentro dos limites  do mapa
             if ((xMin < 0) || (zMin < 0) || (xMax > texture.Width) || (zMax > texture.Height))
                 return Vector3.Up;
-            
+
             Vector3 p1 = vertex[zMax * texture.Width + xMin].Normal;
             Vector3 p2 = vertex[zMin * texture.Width + xMax].Normal;
-                        
-            return p1 + (p2 - p1) * ((x - xMin) + (z - zMin));                     
-        }     
 
-        public void Draw(GraphicsDevice device) 
+            return p1 + (p2 - p1) * ((x - xMin) + (z - zMin));
+        }
+
+        public void Draw(GraphicsDevice device)
         {
-            effect.View = cameras.View;
-            effect.World = worldMatrix;            
+            effect.View = camera.View();
+            effect.World = worldMatrix;
             effect.CurrentTechnique.Passes[0].Apply();
             device.SetVertexBuffer(vertexBuffer);
             device.Indices = indexBuffer;
-           
+
             device.DrawIndexedPrimitives(PrimitiveType.TriangleStrip, 0, 0, texels.Length * 6);
         }
-                
+
     }
 }

@@ -26,29 +26,23 @@ namespace IP3D_Fase3
         public float yaw = 0;
         bool bulletFlag;
 
-        MenuCamera cameras;
+        CameraSurfaceFollow camera;
 
-        public Bullet(GraphicsDevice device, ContentManager content, MenuCamera cam, Map map, Vector3 pos)
+        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
         {
-            cameras = cam;
+            camera = cam;
             terrain = map;
             myBullet = content.Load<Model>("Cube");
             bulletFlag = false;
-
-            ////direction
-            //float aspectRatio = (float)device.Viewport.Width /
-            //                          device.Viewport.Height;
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = pos;
             inicialPos = position;
             scale = 0.09f;
 
-            cam = new MenuCamera(device);
-
-            worldMatrix = cameras.World;
-            View = cameras.View;
-            Projection = cameras.Projection;
+            worldMatrix = camera.world;
+            View = camera.view;
+            Projection = camera.projection;
         }
         
         public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -59,10 +53,7 @@ namespace IP3D_Fase3
                 gravity -= 0.3f;
                 position += new Vector3(x, gravity, z) * 0.04f;
                 Trajectory(gameTime);
-            }
-
-           
-                     
+            }                     
         }
 
         /// <summary>
@@ -92,8 +83,8 @@ namespace IP3D_Fase3
                     {
                         world1 = effect.World;
                         effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
-                        effect.View = cameras.View;
-                        effect.Projection = cameras.Projection;
+                        effect.View = camera.view;
+                        effect.Projection = camera.projection;
                         effect.EnableDefaultLighting();
                         if (bulletFlag == false)
                         {

@@ -51,8 +51,7 @@ namespace IP3D_Fase3
         Vector3 position;
         Vector3 target;
 
-        //CameraSurfaceFollow camera;
-        MenuCamera cameras;
+        CameraSurfaceFollow camera;
         Map terrain;
         
         public Vector2 placement;
@@ -62,9 +61,9 @@ namespace IP3D_Fase3
         ContentManager content;
         GraphicsDevice device;
 
-        public ClsTank(GraphicsDevice device, ContentManager content, MenuCamera cameras, Map map, Vector2 newPlacement)
+        public ClsTank(GraphicsDevice device, ContentManager content, CameraSurfaceFollow camera, Map map, Vector2 newPlacement)
         {
-            this.cameras = cameras;            
+            this.camera = camera;
 
             placement = newPlacement;            
             terrain = map;
@@ -78,14 +77,13 @@ namespace IP3D_Fase3
 
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
-            cameras = new MenuCamera(device, position);
-            cameras.SwitchOption();
-
+            camera = new CameraSurfaceFollow(device);
+            
             scale = 0.001f;
             myModel = content.Load<Model>("tank");
-            worldMatrix = cameras.World;
-            View = cameras.View;
-            Projection = cameras.Projection;
+            worldMatrix = camera.world;
+            View = camera.view;
+            Projection = camera.projection;
            
             // Lê os bones
             turretBone = myModel.Bones["turret_geo"];//torre
@@ -183,16 +181,10 @@ namespace IP3D_Fase3
                     break;
             }
 
-            while (bamB.BulletFlag == false)
-            {
-                dx = directionX;
-                dz = directionZ;
-            }
-
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 if (bamB == null)
-                    bamB = new Bullet(device, content, cameras, terrain, Position + new Vector3(0,0.3f,0));
+                    bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0,0.3f,0));
                 bamB.BulletFlag = true;
             }
 
@@ -230,8 +222,8 @@ namespace IP3D_Fase3
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.World = boneTransforms[mesh.ParentBone.Index];
-                    effect.View = cameras.View;
-                    effect.Projection = cameras.Projection;
+                    effect.View = camera.view;
+                    effect.Projection = camera.projection;
                     effect.EnableDefaultLighting();
                 }
                 mesh.Draw();
@@ -252,6 +244,10 @@ namespace IP3D_Fase3
             get { return target; }
         }
 
+        public Matrix Rotation
+        {
+            get { return rotation; }
+        }
     }
 }
  

@@ -11,11 +11,12 @@ namespace IP3D_Fase3
     /// </summary>
     public class Game1 : Game
     {
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         Map mapa;
-        MenuCamera cameras;
+        CameraSurfaceFollow camera;
         ClsTank tank, tank2;
 
         public Game1()
@@ -35,7 +36,7 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
 
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            cameras = new MenuCamera(GraphicsDevice);                  
+            camera = new CameraSurfaceFollow(GraphicsDevice);                 
             base.Initialize();
         }
 
@@ -47,9 +48,9 @@ namespace IP3D_Fase3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mapa = new Map(GraphicsDevice, Content, cameras);
-            tank = new ClsTank(GraphicsDevice, Content, cameras, mapa, new Vector2(10, 10));
-            tank2 = new ClsTank(GraphicsDevice, Content, cameras, mapa, new Vector2(10, 9));
+            mapa = new Map(GraphicsDevice, Content, camera);
+            tank = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 10));
+            tank2 = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 9));
             
             // TODO: use this.Content to load your game content here
         }
@@ -73,10 +74,10 @@ namespace IP3D_Fase3
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            cameras.Select();
-            cameras.SwitchOption();
-            cameras.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cameras.Position.X, cameras.Position.Z), tank.Target);
-            
+            //new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds
+
+            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(camera.position.X,camera.position.Z));
+            camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
             // TODO: Add your update logic here
