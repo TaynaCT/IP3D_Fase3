@@ -205,14 +205,7 @@ namespace IP3D_Fase3
             rotation.Right = Vector3.Normalize(Vector3.Cross(horizontalDirection, rotation.Up));
             rotation.Forward = Vector3.Normalize(Vector3.Cross(rotation.Up, rotation.Right));
 
-            target = rotation.Forward;
-
-            bool isColliding = false;
-            if (bamB != null && bamB.BulletFlag)
-                isColliding = boundingSphere.Collision(bamB.Position, bamB.speed, bamB.aceleration, gameTime);
-
-            if (isColliding)
-                bamB = null;
+            target = rotation.Forward;         
 
         }
 
