@@ -181,7 +181,7 @@ namespace IP3D_Fase3
                         yaw -= .05f;
                     break;
             }
-              bamB.BulletFlag = false;
+              
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
   
@@ -206,6 +206,14 @@ namespace IP3D_Fase3
             rotation.Forward = Vector3.Normalize(Vector3.Cross(rotation.Up, rotation.Right));
 
             target = rotation.Forward;
+
+            bool isColliding = false;
+            if (bamB != null && bamB.BulletFlag)
+                isColliding = boundingSphere.Collision(bamB.Position, bamB.speed, bamB.aceleration, gameTime);
+
+            if (isColliding)
+                bamB = null;
+
         }
 
         public void Draw()

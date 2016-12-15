@@ -20,7 +20,7 @@ namespace IP3D_Fase3
         Map terrain;
         public Vector2 placement;
         Vector3 position, inicialPos;
-        Vector3 speed, aceleration;
+        public Vector3 speed, aceleration;
         public float scale;
         public float height;
         public float yaw = 0;
@@ -39,6 +39,7 @@ namespace IP3D_Fase3
             position = pos;
             inicialPos = position;
             scale = 0.09f;
+            
 
             worldMatrix = camera.world;
             View = camera.view;
@@ -52,7 +53,9 @@ namespace IP3D_Fase3
             {
                 gravity -= 0.3f;
                 position += new Vector3(x, gravity, z) * 0.04f;
-                Trajectory(gameTime);
+                               
+                Trajectory(gameTime, x, z);
+                
             }                     
         }
 
@@ -61,10 +64,11 @@ namespace IP3D_Fase3
         /// </summary>
         /// <param name="gameTime"></param>
         /// <returns>Posição final do projetil</returns>
-        public Vector3 Trajectory(GameTime gameTime)
+        public Vector3 Trajectory(GameTime gameTime, float x, float z)
         {
             float timePassed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            speed = new Vector3(x, 0, z);
+            aceleration = new Vector3(.5f, 0.1f, 2f);
             //x = xo + vo t + ½ a t2 
             Vector3 finalPos = inicialPos + speed * timePassed + aceleration * 1 / 2 * (float)Math.Pow(timePassed, 2);
 
@@ -101,6 +105,11 @@ namespace IP3D_Fase3
         {
             get { return bulletFlag; }
             set { bulletFlag = value; }
+        }
+
+        public Vector3 Position
+        {
+            get { return position; }
         }
     }
 }
