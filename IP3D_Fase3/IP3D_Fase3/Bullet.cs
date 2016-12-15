@@ -14,8 +14,8 @@ namespace IP3D_Fase3
     {
         Model myBullet;
         Matrix worldMatrix;
-        Matrix View;
-        Matrix Projection;
+        Matrix view;
+        Matrix projection;
        
         Map terrain;
         public Vector2 placement;
@@ -26,7 +26,9 @@ namespace IP3D_Fase3
         public float yaw = 0;
         bool bulletFlag;
 
+        DrawBoundingSphere boundingSphere; 
         CameraSurfaceFollow camera;
+        
 
         public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
         {
@@ -42,8 +44,10 @@ namespace IP3D_Fase3
             
 
             worldMatrix = camera.world;
-            View = camera.view;
-            Projection = camera.projection;
+            view = camera.view;
+            projection = camera.projection;
+
+            boundingSphere = new DrawBoundingSphere(myBullet, Position, scale);
         }
         
         public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -98,6 +102,8 @@ namespace IP3D_Fase3
                     mesh.Draw();
                 }
             }
+
+            boundingSphere.Draw(view, projection);
        
         }
         
