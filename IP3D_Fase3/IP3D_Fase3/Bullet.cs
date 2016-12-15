@@ -17,16 +17,14 @@ namespace IP3D_Fase3
         Matrix view;
         Matrix projection;
        
-        Map terrain;
-        public Vector2 placement;
+        Map terrain;        
         Vector3 position, inicialPos;
         public Vector3 speed, aceleration;
         public float scale;
         public float height;
         public float yaw = 0;
         bool bulletFlag;
-
-        DrawBoundingSphere boundingSphere; 
+                
         CameraSurfaceFollow camera;
         
 
@@ -36,8 +34,7 @@ namespace IP3D_Fase3
             terrain = map;
             myBullet = content.Load<Model>("Cube");
             bulletFlag = false;
-
-            height = terrain.SurfaceFollow(placement.X, placement.Y);
+                       
             position = pos;
             inicialPos = position;
             scale = 0.09f;
@@ -47,7 +44,6 @@ namespace IP3D_Fase3
             view = camera.view;
             projection = camera.projection;
 
-            boundingSphere = new DrawBoundingSphere(myBullet, Position, scale);
         }
         
         public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -101,9 +97,7 @@ namespace IP3D_Fase3
                     }
                     mesh.Draw();
                 }
-            }
-
-            boundingSphere.Draw(view, projection);       
+            }                       
         }
         
         public bool BulletFlag

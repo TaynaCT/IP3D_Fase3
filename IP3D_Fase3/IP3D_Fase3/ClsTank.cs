@@ -11,12 +11,8 @@ using System.Threading.Tasks;
 namespace IP3D_Fase3
 {
     class ClsTank
-    {       
-        //tayná is cool
-        Model myModel;
-        Matrix worldMatrix;
-        Matrix View;
-        Matrix Projection;
+    {               
+        Model myModel;               
         Bullet bamB;
         public float scale;
 
@@ -29,7 +25,7 @@ namespace IP3D_Fase3
         ModelBone rBackWheel;
         ModelBone rFrontSteer;
         ModelBone lFrontSteer;
-
+        
         // Transformações iniciais
         // (posicionar torre e canhão)
         Matrix cannonTransform;
@@ -58,8 +54,7 @@ namespace IP3D_Fase3
         
         public Vector2 placement;
         Vector3 direction;
-        DrawBoundingSphere boundingSphere;
-
+        
         ContentManager content;
         GraphicsDevice device;
 
@@ -73,20 +68,14 @@ namespace IP3D_Fase3
             this.content = content;
             this.device = device;
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
-
-            //float aspectRatio = (float)device.Viewport.Width /
-            //                           device.Viewport.Height;
-
+                        
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);
             camera = new CameraSurfaceFollow(device);
             
             scale = 0.001f;
             myModel = content.Load<Model>("tank");
-            worldMatrix = camera.world;
-            View = camera.view;
-            Projection = camera.projection;
-           
+                                   
             // Lê os bones
             turretBone = myModel.Bones["turret_geo"];//torre
             cannonBone = myModel.Bones["canon_geo"];//canhão
@@ -110,9 +99,7 @@ namespace IP3D_Fase3
 
             turretRotation = 1f;
             cannonRotation = .2f;
-            wheelRotation = .5f;
-
-            boundingSphere = new DrawBoundingSphere(myModel, position, scale);         
+            wheelRotation = .5f;          
         }
 
         public void Update(int num, GameTime gameTime)
@@ -205,13 +192,12 @@ namespace IP3D_Fase3
             rotation.Right = Vector3.Normalize(Vector3.Cross(horizontalDirection, rotation.Up));
             rotation.Forward = Vector3.Normalize(Vector3.Cross(rotation.Up, rotation.Right));
 
-            target = rotation.Forward;         
-
+            target = rotation.Forward;
         }
 
         public void Draw()
-        {
-        // Aplica as transformações em cascata por todos os bones       
+        {        
+            // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
             cannonBone.Transform = Matrix.CreateRotationX(cannonRotation) * cannonTransform;

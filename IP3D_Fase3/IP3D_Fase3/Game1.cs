@@ -80,6 +80,8 @@ namespace IP3D_Fase3
             camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
+
+            //IsColliding(tank, )
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -99,6 +101,25 @@ namespace IP3D_Fase3
             // TODO: Add your drawing code here
             
             base.Draw(gameTime);
+        }
+                
+        public bool IsColliding(Model tank1, Matrix worldMatrix1, Model tank2, Matrix worldMatrix2)
+        {
+            for (int meshIndex1 = 0; meshIndex1 < tank1.Meshes.Count; meshIndex1++)
+            {
+                BoundingSphere sphere1 = tank1.Meshes[meshIndex1].BoundingSphere;
+                sphere1 = sphere1.Transform(worldMatrix1);
+
+                for (int meshIndex2 = 0; meshIndex2 < tank2.Meshes.Count; meshIndex2++)
+                {
+                    BoundingSphere sphere2 = tank2.Meshes[meshIndex2].BoundingSphere;
+                    sphere2 = sphere2.Transform(worldMatrix2);
+
+                    if (sphere1.Intersects(sphere2))
+                        return true;
+                }
+            }
+            return false;
         }
     }
 }
