@@ -12,6 +12,7 @@ namespace IP3D_Fase3
 {
     class ClsTank
     {       
+        //tayná is cool
         Model myModel;
         Matrix worldMatrix;
         Matrix View;
