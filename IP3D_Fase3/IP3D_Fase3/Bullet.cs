@@ -103,8 +103,7 @@ namespace IP3D_Fase3
                 }
             }
 
-            boundingSphere.Draw(view, projection);
-       
+            boundingSphere.Draw(view, projection);       
         }
         
         public bool BulletFlag
