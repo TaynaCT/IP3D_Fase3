@@ -17,6 +17,7 @@ namespace IP3D_Fase3
         GraphicsDevice dev;
         CameraSurfaceFollow cam;
         Random rnd;
+        
 
         public Dustgen(GraphicsDevice d,CameraSurfaceFollow c)
         {
@@ -61,9 +62,17 @@ namespace IP3D_Fase3
             //effect.View = cam.;
             effect.Projection = cam.projection;
 
+            effect.CurrentTechnique.Passes[0].Apply();
 
+            VertexPositionColor[] vertices = new VertexPositionColor[dust.Count * 2];
 
+            for(int i = 0; i< dust.Count; i++)
+            {
+                vertices[i * 2] =new VertexPositionColor(dust[i].Pos, Color.White);
 
+                vertices[i * 2 + 1] = new VertexPositionColor(new Vector3(dust[i].Pos.X, dust[i].Pos.Y + 0.05f, dust[i].Pos.Z), Color.DarkBlue);
+            }
+            dev.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, dust.Count);
         }
     }
 }

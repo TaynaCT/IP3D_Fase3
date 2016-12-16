@@ -14,10 +14,10 @@ namespace IP3D_Fase3
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         Map mapa;
         CameraSurfaceFollow camera;
         ClsTank tank, tank2;
+        Dustgen gen;
 
         public Game1()
         {
@@ -36,7 +36,8 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
 
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            camera = new CameraSurfaceFollow(GraphicsDevice);                 
+            camera = new CameraSurfaceFollow(GraphicsDevice);
+            gen = new Dustgen(graphics.GraphicsDevice, camera);
             base.Initialize();
         }
 
@@ -80,6 +81,7 @@ namespace IP3D_Fase3
             camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
+            gen.ciclo();
 
             //if (Colisions.IsColliding(tank.tankModel, tank.RootTransform, tank2.tankModel, tank2.RootTransform))
             //{
@@ -108,8 +110,9 @@ namespace IP3D_Fase3
             mapa.Draw(GraphicsDevice);
             tank.Draw();
             tank2.Draw();
+            gen.Draw();
             // TODO: Add your drawing code here
-            
+
             base.Draw(gameTime);
         }
     }
