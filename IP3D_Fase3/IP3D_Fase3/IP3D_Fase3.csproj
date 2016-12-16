@@ -43,6 +43,7 @@
     <Compile Include="CameraSurfaceFollow.cs" />
     <Compile Include="CameraFree.cs" />
     <Compile Include="ClsTank.cs" />
+    <Compile Include="Dustgen.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Map.cs" />
