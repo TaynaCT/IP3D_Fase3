@@ -10,27 +10,32 @@ namespace IP3D_Fase3
 {
     class Colisions
     {
-
-
-        public bool IsColliding(Model tank1, Matrix worldMatrix1, Model tank2, Matrix worldMatrix2)
+        
+        public static bool IsColliding(Model tank1, Matrix worldMatrix1, Model tank2, Matrix worldMatrix2)
         {
-            for (int meshIndex1 = 0; meshIndex1 < tank1.Meshes.Count; meshIndex1++)
+            for (int i = 0; i < tank1.Meshes.Count; i++)
             {
-                BoundingSphere sphere1 = tank1.Meshes[meshIndex1].BoundingSphere;
-                sphere1 = sphere1.Transform(worldMatrix1);
-                sphere1.Radius *= 0.001f;
-                //Matrix scaleMatrix = Matrix.CreateScale(sphere1.Radius);                
+                BoundingSphere sphere1 = tank1.Meshes[i].BoundingSphere;
+                sphere1.Transform(worldMatrix1);
 
-                for (int meshIndex2 = 0; meshIndex2 < tank2.Meshes.Count; meshIndex2++)
+                for (int j = 0; j < tank2.Meshes.Count; j++)
                 {
-                    BoundingSphere sphere2 = tank2.Meshes[meshIndex2].BoundingSphere;
-                    sphere2 = sphere2.Transform(worldMatrix2);
-                    sphere2.Radius *= 0.001f;
+                    BoundingSphere sphere2 = tank2.Meshes[j].BoundingSphere;
+                    sphere2.Transform(worldMatrix2);
+
                     if (sphere1.Intersects(sphere2))
                         return true;
                 }
             }
+
             return false;
+        }
+
+        public static bool Test()
+        {
+            BoundingSphere s1 = new BoundingSphere(Vector3.Zero, 1), s2 = new BoundingSphere(5 * Vector3.One, 1);
+
+            return s1.Intersects(s2);
         }
     }
 }

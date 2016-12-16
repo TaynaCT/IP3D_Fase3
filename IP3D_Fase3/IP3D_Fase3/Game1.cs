@@ -50,7 +50,7 @@ namespace IP3D_Fase3
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mapa = new Map(GraphicsDevice, Content, camera);
             tank = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 10));
-            tank2 = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 9));
+            tank2 = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 6));
             
             // TODO: use this.Content to load your game content here
         }
@@ -76,16 +76,21 @@ namespace IP3D_Fase3
                 Exit();
             //new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds
 
-            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(camera.position.X,camera.position.Z));
+            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(camera.position.X, camera.position.Z));
             camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
 
-            if(IsColliding(tank.tankModel, tank.Rotation, tank2.tankModel, tank2.Rotation))
-            {
-                tank.Position = tank.LasPosition;
-                tank2.Position = tank2.LasPosition;
-            }
+            //if (Colisions.IsColliding(tank.tankModel, tank.RootTransform, tank2.tankModel, tank2.RootTransform))
+            //{
+            //    tank.Position = tank.LasPosition;
+            //    tank2.Position = tank2.LasPosition;
+            //}
+
+            //Console.WriteLine(Colisions.IsColliding(tank.tankModel, tank.RootTransform,
+            //    tank2.tankModel, tank2.RootTransform));
+
+            Console.WriteLine(Colisions.Test());
 
             // TODO: Add your update logic here
 
@@ -106,28 +111,6 @@ namespace IP3D_Fase3
             // TODO: Add your drawing code here
             
             base.Draw(gameTime);
-        }
-                
-        public bool IsColliding(Model tank1, Matrix worldMatrix1, Model tank2, Matrix worldMatrix2)
-        {
-            BasicEffect effect;
-            for (int meshIndex1 = 0; meshIndex1 < tank1.Meshes.Count; meshIndex1++)
-            {
-                BoundingSphere sphere1 = tank1.Meshes[meshIndex1].BoundingSphere;
-                sphere1 = sphere1.Transform(worldMatrix1);
-                sphere1.Radius *= 0.001f;
-                //Matrix scaleMatrix = Matrix.CreateScale(sphere1.Radius);                
-
-                for (int meshIndex2 = 0; meshIndex2 < tank2.Meshes.Count; meshIndex2++)
-                {
-                    BoundingSphere sphere2 = tank2.Meshes[meshIndex2].BoundingSphere;
-                    sphere2 = sphere2.Transform(worldMatrix2);
-                    sphere2.Radius *= 0.001f;
-                    if (sphere1.Intersects(sphere2))
-                        return true;
-                }
-            }
-            return false;
         }
     }
 }

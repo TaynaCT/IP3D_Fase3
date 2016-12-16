@@ -16,6 +16,8 @@ namespace IP3D_Fase3
         Bullet bamB;
         public float scale;
 
+        BoundingSphere boundingSphere;
+
         //bones
         ModelBone turretBone;
         ModelBone cannonBone;
@@ -99,7 +101,7 @@ namespace IP3D_Fase3
 
             turretRotation = 1f;
             cannonRotation = .2f;
-            wheelRotation = .5f;          
+            wheelRotation = .5f;
         }
 
         public void Update(int num, GameTime gameTime)
@@ -248,6 +250,11 @@ namespace IP3D_Fase3
         public Vector3 LasPosition
         {
             get { return lastPosition; }
+        }
+
+        public Matrix RootTransform
+        {
+            get { return myModel.Root.Transform; }
         }
     }
 }
