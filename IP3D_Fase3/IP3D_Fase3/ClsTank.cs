@@ -46,7 +46,7 @@ namespace IP3D_Fase3
         float yaw;
         float dx, dz;
                 
-        Vector3 position;
+        Vector3 position, lastPosition;
         Vector3 target;
 
         CameraSurfaceFollow camera;
@@ -104,6 +104,7 @@ namespace IP3D_Fase3
 
         public void Update(int num, GameTime gameTime)
         {
+            lastPosition = position;
             switch (num)
             {
                 case 1:
@@ -238,6 +239,15 @@ namespace IP3D_Fase3
         public Matrix Rotation
         {
             get { return rotation; }
+        }
+        
+        public Model tankModel
+        {
+            get { return myModel; }
+        }       
+        public Vector3 LasPosition
+        {
+            get { return lastPosition; }
         }
     }
 }

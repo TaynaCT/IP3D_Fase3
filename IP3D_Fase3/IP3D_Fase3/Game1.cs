@@ -81,7 +81,12 @@ namespace IP3D_Fase3
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
 
-            //IsColliding(tank, )
+            if(IsColliding(tank.tankModel, tank.Rotation, tank2.tankModel, tank2.Rotation))
+            {
+                tank.Position = tank.LasPosition;
+                tank2.Position = tank2.LasPosition;
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -109,12 +114,13 @@ namespace IP3D_Fase3
             {
                 BoundingSphere sphere1 = tank1.Meshes[meshIndex1].BoundingSphere;
                 sphere1 = sphere1.Transform(worldMatrix1);
+                sphere1.Radius *= 0.001f;
 
                 for (int meshIndex2 = 0; meshIndex2 < tank2.Meshes.Count; meshIndex2++)
                 {
                     BoundingSphere sphere2 = tank2.Meshes[meshIndex2].BoundingSphere;
                     sphere2 = sphere2.Transform(worldMatrix2);
-
+                    sphere2.Radius *= 0.001f;
                     if (sphere1.Intersects(sphere2))
                         return true;
                 }
