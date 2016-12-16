@@ -110,11 +110,13 @@ namespace IP3D_Fase3
                 
         public bool IsColliding(Model tank1, Matrix worldMatrix1, Model tank2, Matrix worldMatrix2)
         {
+            BasicEffect effect;
             for (int meshIndex1 = 0; meshIndex1 < tank1.Meshes.Count; meshIndex1++)
             {
                 BoundingSphere sphere1 = tank1.Meshes[meshIndex1].BoundingSphere;
                 sphere1 = sphere1.Transform(worldMatrix1);
                 sphere1.Radius *= 0.001f;
+                //Matrix scaleMatrix = Matrix.CreateScale(sphere1.Radius);                
 
                 for (int meshIndex2 = 0; meshIndex2 < tank2.Meshes.Count; meshIndex2++)
                 {
