@@ -111,14 +111,14 @@ namespace IP3D_Fase3
             {
                 case 1:
                     turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.Right) ? 1 : 0) -
-                              (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.2f;
+                              (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.02f;
 
                     cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Up) ? 1 : 0) -
                                   (Keyboard.GetState().IsKeyDown(Keys.Down) ? 1 : 0)) * -.02f;
                     break;
                 case 2:
                     turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.O) ? 1 : 0) -
-                              (Keyboard.GetState().IsKeyDown(Keys.U) ? 1 : 0)) * -.2f;
+                              (Keyboard.GetState().IsKeyDown(Keys.U) ? 1 : 0)) * -.02f;
 
                     cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Y) ? 1 : 0) -
                                   (Keyboard.GetState().IsKeyDown(Keys.H) ? 1 : 0)) * -.02f;
@@ -184,6 +184,8 @@ namespace IP3D_Fase3
 
             if(bamB != null && bamB.BulletFlag)
                 bamB.bulletUpdate(gameTime, dx, dz);
+            
+
 
             //põe o tank em cima do terreno
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
@@ -252,15 +254,15 @@ namespace IP3D_Fase3
         {
             get { return lastPosition; }
         }
-
-        //public Matrix RootTransform
-        //{
-        //    get { return myModel.Root.Transform; }
-        //}
-
+                
         public Matrix[] BoneTransforms
         {
             get { return boneTransforms; }
+        }
+
+        public Bullet GetBullet
+        {
+            get { return bamB; }
         }
     }
 }

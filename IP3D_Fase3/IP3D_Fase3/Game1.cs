@@ -83,16 +83,21 @@ namespace IP3D_Fase3
             tank2.Update(2, gameTime);
             gen.ciclo();
 
-            if (Colisions.IsColliding(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
+            if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
                 tank.Position = tank.LasPosition;
                 tank2.Position = tank2.LasPosition;
             }
 
-            Console.WriteLine(Colisions.IsColliding(tank.tankModel, tank.BoneTransforms,
+            //test
+            Console.WriteLine(Collisions.TankCollision(tank.tankModel, tank.BoneTransforms,
                 tank2.tankModel, tank2.BoneTransforms));
-
-            //Console.WriteLine(Colisions.Test());
+            if(tank2.GetBullet != null && tank2.GetBullet.BulletFlag)
+                Console.WriteLine("BULLET TANK2 - TANK 1 = " + Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms,
+                                                                                          tank2.GetBullet.BulletModel, tank2.GetBullet.WorldMatrix));
+            if (tank.GetBullet != null && tank.GetBullet.BulletFlag)
+                Console.WriteLine("BULLET TANK1 - TANK2 = " + Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,
+                                                                                         tank.GetBullet.BulletModel, tank.GetBullet.WorldMatrix));
 
             // TODO: Add your update logic here
 

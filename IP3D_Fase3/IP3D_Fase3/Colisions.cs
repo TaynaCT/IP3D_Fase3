@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IP3D_Fase3
 {
-    class Colisions
+    class Collisions
     {
         //Classe que faz a verificação de colisões       
         /// <summary>
@@ -19,7 +19,7 @@ namespace IP3D_Fase3
         /// <param name="tank2">modelo 2</param>
         /// <param name="worldMatrix2">array com as matrizes de cada bone do modelo 2</param>
         /// <returns></returns>
-        public static bool IsColliding(Model tank1, Matrix[] worldMatrix1, Model tank2, Matrix[] worldMatrix2)
+        public static bool TankCollision(Model tank1, Matrix[] worldMatrix1, Model tank2, Matrix[] worldMatrix2)
         {
             for (int i = 0; i < tank1.Meshes.Count; i++)
             {
@@ -39,11 +39,26 @@ namespace IP3D_Fase3
             return false;//não há colisões
         }
 
-        public static bool Test()
-        {
-            BoundingSphere s1 = new BoundingSphere(Vector3.Zero, 1), s2 = new BoundingSphere(5 * Vector3.One, 1);
 
-            return s1.Intersects(s2);
+        public static bool BulletCollision(Model tank, Matrix[] worldMatrix1, Model bullet, Matrix worldMatrix)
+        {
+            for (int i = 0; i < bullet.Meshes.Count; i++)
+            {
+                BoundingSphere bulletSphere = bullet.Meshes[i].BoundingSphere;
+                bulletSphere = bulletSphere.Transform(worldMatrix);
+
+                for (int j = 0; j < tank.Meshes.Count; j++)
+                {
+                    BoundingSphere tankSphere = tank.Meshes[j].BoundingSphere;
+                    tankSphere = tankSphere.Transform(worldMatrix1[j]);
+
+                    if (bulletSphere.Intersects(tankSphere))
+                        return true; //há colisões
+                }
+            }
+
+            return false;//não há colisões
         }
+                
     }
 }

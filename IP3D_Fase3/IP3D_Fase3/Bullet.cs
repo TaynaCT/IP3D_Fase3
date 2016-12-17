@@ -13,21 +13,17 @@ namespace IP3D_Fase3
     class Bullet
     {
         Model myBullet;
-        Matrix worldMatrix;
-        Matrix view;
-        Matrix projection;
-       
+        Matrix worldMatrix;         
         Map terrain;        
         Vector3 position, inicialPos;
         public Vector3 speed, aceleration;
         public float scale;
-        public float height;
+       
         public float yaw = 0;
         bool bulletFlag;
                 
         CameraSurfaceFollow camera;
         
-
         public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
         {
             camera = cam;
@@ -37,13 +33,7 @@ namespace IP3D_Fase3
                        
             position = pos;
             inicialPos = position;
-            scale = 0.025f;
-
-
-            worldMatrix = camera.world;
-            view = camera.view;
-            projection = camera.projection;
-
+            scale = 0.025f;            
         }
         
         public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -54,8 +44,7 @@ namespace IP3D_Fase3
                 gravity -= 0.3f;
                 position += new Vector3(x, gravity, z) * 0.04f;
                                
-                Trajectory(gameTime, x, z);
-                
+                Trajectory(gameTime, x, z);                
             }                     
         }
 
@@ -77,6 +66,9 @@ namespace IP3D_Fase3
 
         public void Draw()
         {
+            myBullet.Root.Transform = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
+            worldMatrix = myBullet.Root.Transform;
+
             if (bulletFlag)
             {
                 foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
@@ -86,7 +78,7 @@ namespace IP3D_Fase3
                     foreach (BasicEffect effect in mesh.Effects)
                     {
                         world1 = effect.World;
-                        effect.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
+                        effect.World = worldMatrix;
                         effect.View = camera.view;
                         effect.Projection = camera.projection;
                         effect.EnableDefaultLighting();
@@ -109,6 +101,16 @@ namespace IP3D_Fase3
         public Vector3 Position
         {
             get { return position; }
+        }
+
+        public Matrix WorldMatrix
+        {
+            get { return worldMatrix; }
+        }
+
+        public Model BulletModel
+        {
+            get { return myBullet; }
         }
     }
 }
