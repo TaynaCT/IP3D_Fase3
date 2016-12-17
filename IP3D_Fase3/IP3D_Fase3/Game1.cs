@@ -83,16 +83,16 @@ namespace IP3D_Fase3
             tank2.Update(2, gameTime);
             gen.ciclo();
 
-            //if (Colisions.IsColliding(tank.tankModel, tank.RootTransform, tank2.tankModel, tank2.RootTransform))
-            //{
-            //    tank.Position = tank.LasPosition;
-            //    tank2.Position = tank2.LasPosition;
-            //}
+            if (Colisions.IsColliding(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
+            {
+                tank.Position = tank.LasPosition;
+                tank2.Position = tank2.LasPosition;
+            }
 
-            //Console.WriteLine(Colisions.IsColliding(tank.tankModel, tank.RootTransform,
-            //    tank2.tankModel, tank2.RootTransform));
+            Console.WriteLine(Colisions.IsColliding(tank.tankModel, tank.BoneTransforms,
+                tank2.tankModel, tank2.BoneTransforms));
 
-            Console.WriteLine(Colisions.Test());
+            //Console.WriteLine(Colisions.Test());
 
             // TODO: Add your update logic here
 

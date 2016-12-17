@@ -219,6 +219,7 @@ namespace IP3D_Fase3
                     effect.View = camera.view;
                     effect.Projection = camera.projection;
                     effect.EnableDefaultLighting();
+                    
                 }
                 mesh.Draw();
             }
@@ -252,9 +253,14 @@ namespace IP3D_Fase3
             get { return lastPosition; }
         }
 
-        public Matrix RootTransform
+        //public Matrix RootTransform
+        //{
+        //    get { return myModel.Root.Transform; }
+        //}
+
+        public Matrix[] BoneTransforms
         {
-            get { return myModel.Root.Transform; }
+            get { return boneTransforms; }
         }
     }
 }

@@ -10,25 +10,33 @@ namespace IP3D_Fase3
 {
     class Colisions
     {
-        
-        public static bool IsColliding(Model tank1, Matrix worldMatrix1, Model tank2, Matrix worldMatrix2)
+        //Classe que faz a verificação de colisões       
+        /// <summary>
+        /// Função que recebe dois modelos 3d e suas matizes de tranformação, depois percorre cada mesh do dos modelos e verifica se há colisões.
+        /// </summary>
+        /// <param name="tank1">modelo 1</param>
+        /// <param name="worldMatrix1">array com as martizes de cada bone</param>
+        /// <param name="tank2">modelo 2</param>
+        /// <param name="worldMatrix2">array com as matrizes de cada bone do modelo 2</param>
+        /// <returns></returns>
+        public static bool IsColliding(Model tank1, Matrix[] worldMatrix1, Model tank2, Matrix[] worldMatrix2)
         {
             for (int i = 0; i < tank1.Meshes.Count; i++)
             {
                 BoundingSphere sphere1 = tank1.Meshes[i].BoundingSphere;
-                sphere1.Transform(worldMatrix1);
-
+                sphere1 = sphere1.Transform(worldMatrix1[i]);
+                
                 for (int j = 0; j < tank2.Meshes.Count; j++)
                 {
                     BoundingSphere sphere2 = tank2.Meshes[j].BoundingSphere;
-                    sphere2.Transform(worldMatrix2);
+                    sphere2 = sphere2.Transform(worldMatrix2[j]);
 
                     if (sphere1.Intersects(sphere2))
-                        return true;
+                        return true; //há colisões
                 }
             }
 
-            return false;
+            return false;//não há colisões
         }
 
         public static bool Test()

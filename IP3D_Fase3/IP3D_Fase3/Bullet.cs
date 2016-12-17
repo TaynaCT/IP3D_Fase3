@@ -37,8 +37,8 @@ namespace IP3D_Fase3
                        
             position = pos;
             inicialPos = position;
-            scale = 0.09f;
-            
+            scale = 0.025f;
+
 
             worldMatrix = camera.world;
             view = camera.view;
