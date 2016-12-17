@@ -39,16 +39,16 @@ namespace IP3D_Fase3
         
         public void bulletUpdate(GameTime gameTime)
         {
-            float timePassed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float timePassed = 0; 
+            timePassed += (float)gameTime.ElapsedGameTime.Milliseconds / 2096.0f;
             Vector3 speed = new Vector3(.02f, .02f, .02f);            
-            //Vector3 velocity = Vector3.Zero;
-            //x = xo + vo t + ½ a t2 
+            
             if (bulletFlag)
             {
-                //velocity += velocity + speed * timePassed;
-                position += velocity * timePassed;
-                
-                
+                position += velocity * ((float)gameTime.ElapsedGameTime.Milliseconds / 90.0f);
+                //pos.Y = pos.Y - 0.5f * GRAVITY * totalTimePassed * totalTimePassed;
+                position.Y -= velocity.Y * 9.8f * timePassed * timePassed;
+                Console.WriteLine(position.Y);
             }
             
         }      
