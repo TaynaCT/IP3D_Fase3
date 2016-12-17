@@ -16,7 +16,7 @@ namespace IP3D_Fase3
         Matrix worldMatrix;         
         Map terrain;        
         Vector3 position, inicialPos;
-        public Vector3 speed, aceleration;
+        Vector3 speed, velocity;
         public float scale;
        
         public float yaw = 0;
@@ -24,7 +24,7 @@ namespace IP3D_Fase3
                 
         CameraSurfaceFollow camera;
         
-        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos)
+        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos, Vector3 direction)
         {
             camera = cam;
             terrain = map;
@@ -33,7 +33,8 @@ namespace IP3D_Fase3
                        
             position = pos;
             inicialPos = position;
-            scale = 0.025f;            
+            scale = 0.025f;
+            velocity = direction;
         }
 
         //public void bulletUpdate(GameTime gameTime,float x, float z)
@@ -47,37 +48,26 @@ namespace IP3D_Fase3
         //        Trajectory(gameTime, x, z);                
         //    }                     
         //}
-        public void bulletUpdate(GameTime gameTime, Vector3 direction)
-        {
-            
-            Vector3 gravity = new Vector3(0, -.5f, 0);
-            if (bulletFlag)
-                position += direction * (float)gameTime.ElapsedGameTime.TotalSeconds;    
-        }
-
-        /// <summary>
-        /// Calcula a trajetoria o projetil a ser disparado
-        /// </summary>
-        /// <param name="gameTime"></param>
-        /// <returns>Posição final do projetil</returns>
-        public Vector3 Trajectory(GameTime gameTime, float x, float z)
+        public void bulletUpdate(GameTime gameTime)
         {
             float timePassed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            speed = new Vector3(x, 0, z);
-            aceleration = new Vector3(.5f, 0.1f, 2f);
+            Vector3 speed = new Vector3(.5f, -9.8f, .5f);            
+            //Vector3 velocity = Vector3.Zero;
             //x = xo + vo t + ½ a t2 
-            Vector3 finalPos = inicialPos + speed * timePassed + aceleration * 1 / 2 * (float)Math.Pow(timePassed, 2);
-
-            return finalPos;
-        }
+            if (bulletFlag)
+            {
+                position += velocity * timePassed;
+            }
+            
+        }      
 
         public void Draw()
         {
             myBullet.Root.Transform = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
             worldMatrix = myBullet.Root.Transform;
 
-            if (bulletFlag)
-            {
+            //if (bulletFlag)
+            //{
                 foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
                 {
                     Matrix world1;
@@ -96,7 +86,7 @@ namespace IP3D_Fase3
                     }
                     mesh.Draw();
                 }
-            }                       
+            //}                       
         }
         
         public bool BulletFlag
