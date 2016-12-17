@@ -36,27 +36,19 @@ namespace IP3D_Fase3
             scale = 0.025f;
             velocity = direction;
         }
-
-        //public void bulletUpdate(GameTime gameTime,float x, float z)
-        //{
-        //    float gravity = 0;
-        //    if (bulletFlag)
-        //    {
-        //        gravity -= 0.3f;
-        //        position += new Vector3(x, gravity, z) * 0.04f;
-
-        //        Trajectory(gameTime, x, z);                
-        //    }                     
-        //}
+        
         public void bulletUpdate(GameTime gameTime)
         {
             float timePassed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector3 speed = new Vector3(.5f, -9.8f, .5f);            
+            Vector3 speed = new Vector3(.02f, .02f, .02f);            
             //Vector3 velocity = Vector3.Zero;
             //x = xo + vo t + ½ a t2 
             if (bulletFlag)
             {
+                //velocity += velocity + speed * timePassed;
                 position += velocity * timePassed;
+                
+                
             }
             
         }      
