@@ -149,6 +149,19 @@ namespace IP3D_Fase3
 
                     if (Keyboard.GetState().IsKeyDown(Keys.D))
                         yaw -= .05f;
+                    //BULLET 
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    {
+                        if (bamB == null)
+                            bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0, 0.3f, 0));
+                        bamB.BulletFlag = true;
+                        dx = directionX;
+                        dz = directionZ;
+                    }
+
+                    if (bamB != null && bamB.BulletFlag)
+                        bamB.bulletUpdate(gameTime, dx, dz);
+
                     break;
 
                 case 2:
@@ -170,22 +183,22 @@ namespace IP3D_Fase3
 
                     if (Keyboard.GetState().IsKeyDown(Keys.L))
                         yaw -= .05f;
+
+                    //BULLET 
+                    if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
+                    {
+                        if (bamB == null)
+                            bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0, 0.3f, 0));
+                        bamB.BulletFlag = true;
+                        dx = directionX;
+                        dz = directionZ;
+                    }
+
+                    if (bamB != null && bamB.BulletFlag)
+                        bamB.bulletUpdate(gameTime, dx, dz);
+
                     break;
             }
-              
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {  
-                if (bamB == null)
-                    bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0,0.3f,0));
-                bamB.BulletFlag = true;
-                dx = directionX;
-                dz = directionZ;
-            }
-
-            if(bamB != null && bamB.BulletFlag)
-                bamB.bulletUpdate(gameTime, dx, dz);
-            
-
 
             //põe o tank em cima do terreno
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
@@ -220,8 +233,7 @@ namespace IP3D_Fase3
                     effect.World = boneTransforms[mesh.ParentBone.Index];
                     effect.View = camera.view;
                     effect.Projection = camera.projection;
-                    effect.EnableDefaultLighting();
-                    
+                    effect.EnableDefaultLighting();                    
                 }
                 mesh.Draw();
             }
@@ -260,9 +272,10 @@ namespace IP3D_Fase3
             get { return boneTransforms; }
         }
 
-        public Bullet GetBullet
+        public Bullet GetSetBullet
         {
             get { return bamB; }
+            set { bamB = value; }
         }
     }
 }

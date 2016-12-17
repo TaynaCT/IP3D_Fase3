@@ -89,15 +89,31 @@ namespace IP3D_Fase3
                 tank2.Position = tank2.LasPosition;
             }
 
-            //test
+            //COLISÕES
             Console.WriteLine(Collisions.TankCollision(tank.tankModel, tank.BoneTransforms,
                 tank2.tankModel, tank2.BoneTransforms));
-            if(tank2.GetBullet != null && tank2.GetBullet.BulletFlag)
+            if (tank2.GetSetBullet != null && tank2.GetSetBullet.BulletFlag)
+            {
+               if( Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms, tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix))
+                {
+                    tank2.GetSetBullet.BulletFlag = false;
+                    tank2.GetSetBullet = null;
+                }
+
                 Console.WriteLine("BULLET TANK2 - TANK 1 = " + Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms,
-                                                                                          tank2.GetBullet.BulletModel, tank2.GetBullet.WorldMatrix));
-            if (tank.GetBullet != null && tank.GetBullet.BulletFlag)
+                                                                                       tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix));
+            }
+            if (tank.GetSetBullet != null && tank.GetSetBullet.BulletFlag)
+            {
+                if(Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix))
+                {
+                    tank.GetSetBullet.BulletFlag = false;
+                    tank.GetSetBullet = null;
+                }
+
                 Console.WriteLine("BULLET TANK1 - TANK2 = " + Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,
-                                                                                         tank.GetBullet.BulletModel, tank.GetBullet.WorldMatrix));
+                                                                                         tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix));
+            }
 
             // TODO: Add your update logic here
 
