@@ -14,9 +14,7 @@ namespace IP3D_Fase3
     {               
         Model myModel;               
         Bullet bamB;
-        public float scale;
-
-        BoundingSphere boundingSphere;
+        public float scale;    
 
         //bones
         ModelBone turretBone;
@@ -46,7 +44,7 @@ namespace IP3D_Fase3
         float cannonRotation;
         float wheelRotation;
         float yaw;
-        float dx, dz;
+        //float dx, dz;
                 
         Vector3 position, lastPosition;
         Vector3 target;
@@ -155,12 +153,11 @@ namespace IP3D_Fase3
                         if (bamB == null)
                             bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0, 0.3f, 0));
                         bamB.BulletFlag = true;
-                        dx = directionX;
-                        dz = directionZ;
+                        
                     }
 
                     if (bamB != null && bamB.BulletFlag)
-                        bamB.bulletUpdate(gameTime, dx, dz);
+                        bamB.bulletUpdate(gameTime, Target);
 
                     break;
 
@@ -189,13 +186,11 @@ namespace IP3D_Fase3
                     {
                         if (bamB == null)
                             bamB = new Bullet(device, content, camera, terrain, Position + new Vector3(0, 0.3f, 0));
-                        bamB.BulletFlag = true;
-                        dx = directionX;
-                        dz = directionZ;
+                        bamB.BulletFlag = true;                       
                     }
 
                     if (bamB != null && bamB.BulletFlag)
-                        bamB.bulletUpdate(gameTime, dx, dz);
+                        bamB.bulletUpdate(gameTime, Target);
 
                     break;
             }

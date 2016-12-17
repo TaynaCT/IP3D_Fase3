@@ -101,9 +101,7 @@ namespace IP3D_Fase3
                     tank2.GetSetBullet = null;
                     
                 }
-
-                //Console.WriteLine("BULLET TANK2 - TANK 1 = " + Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms,
-                //                                                                       tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix));
+               
             }
             if (tank.GetSetBullet != null && tank.GetSetBullet.BulletFlag)
             {
@@ -113,9 +111,7 @@ namespace IP3D_Fase3
                     tank.GetSetBullet.BulletFlag = false;
                     tank.GetSetBullet = null;
                 }
-
-                //Console.WriteLine("BULLET TANK1 - TANK2 = " + Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,
-                //                                                                         tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix));
+                                
             }
 
             // TODO: Add your update logic here

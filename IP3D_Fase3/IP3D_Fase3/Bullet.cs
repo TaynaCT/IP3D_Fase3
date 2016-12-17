@@ -35,17 +35,24 @@ namespace IP3D_Fase3
             inicialPos = position;
             scale = 0.025f;            
         }
-        
-        public void bulletUpdate(GameTime gameTime,float x, float z)
+
+        //public void bulletUpdate(GameTime gameTime,float x, float z)
+        //{
+        //    float gravity = 0;
+        //    if (bulletFlag)
+        //    {
+        //        gravity -= 0.3f;
+        //        position += new Vector3(x, gravity, z) * 0.04f;
+
+        //        Trajectory(gameTime, x, z);                
+        //    }                     
+        //}
+        public void bulletUpdate(GameTime gameTime, Vector3 direction)
         {
-            float gravity = 0;
+            
+            Vector3 gravity = new Vector3(0, -.5f, 0);
             if (bulletFlag)
-            {
-                gravity -= 0.3f;
-                position += new Vector3(x, gravity, z) * 0.04f;
-                               
-                Trajectory(gameTime, x, z);                
-            }                     
+                position += direction * (float)gameTime.ElapsedGameTime.TotalSeconds;    
         }
 
         /// <summary>
