@@ -94,25 +94,28 @@ namespace IP3D_Fase3
                 tank2.tankModel, tank2.BoneTransforms));
             if (tank2.GetSetBullet != null && tank2.GetSetBullet.BulletFlag)
             {
-               if( Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms, tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix))
+               if( Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms, tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix) ||
+                    tank2.GetSetBullet.Position.Y < mapa.SurfaceFollow(tank2.GetSetBullet.Position.X, tank2.GetSetBullet.Position.Z))
                 {
                     tank2.GetSetBullet.BulletFlag = false;
                     tank2.GetSetBullet = null;
+                    
                 }
 
-                Console.WriteLine("BULLET TANK2 - TANK 1 = " + Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms,
-                                                                                       tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix));
+                //Console.WriteLine("BULLET TANK2 - TANK 1 = " + Collisions.BulletCollision(tank.tankModel, tank.BoneTransforms,
+                //                                                                       tank2.GetSetBullet.BulletModel, tank2.GetSetBullet.WorldMatrix));
             }
             if (tank.GetSetBullet != null && tank.GetSetBullet.BulletFlag)
             {
-                if(Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix))
+                if(Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix) ||
+                    tank.GetSetBullet.Position.Y < mapa.SurfaceFollow(tank.GetSetBullet.Position.X, tank.GetSetBullet.Position.Z))
                 {
                     tank.GetSetBullet.BulletFlag = false;
                     tank.GetSetBullet = null;
                 }
 
-                Console.WriteLine("BULLET TANK1 - TANK2 = " + Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,
-                                                                                         tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix));
+                //Console.WriteLine("BULLET TANK1 - TANK2 = " + Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms,
+                //                                                                         tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix));
             }
 
             // TODO: Add your update logic here
