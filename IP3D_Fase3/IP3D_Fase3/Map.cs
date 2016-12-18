@@ -332,5 +332,9 @@ namespace IP3D_Fase3
             device.DrawIndexedPrimitives(PrimitiveType.TriangleStrip, 0, 0, texels.Length * 6);
         }
 
+        public int MapLimit
+        {
+            get { return texture.Height; }
+        }
     }
 }

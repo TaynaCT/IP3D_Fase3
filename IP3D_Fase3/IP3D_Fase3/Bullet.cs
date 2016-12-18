@@ -32,7 +32,7 @@ namespace IP3D_Fase3
             bulletFlag = false;
                        
             position = pos;
-            inicialPos = position;
+            inicialPos = position + new Vector3(0, -10, 0);
             scale = 0.025f;
             velocity = direction;
         }

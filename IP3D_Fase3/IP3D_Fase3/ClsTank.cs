@@ -38,6 +38,7 @@ namespace IP3D_Fase3
         Matrix[] boneTransforms;
 
         Matrix rotation; // rotação do tank
+        Matrix cannonMatrixRotation;
 
         float height;
         float turretRotation;
@@ -204,8 +205,13 @@ namespace IP3D_Fase3
             Vector3 horizontalDirection = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromAxisAngle(rotation.Up, yaw));
             rotation.Right = Vector3.Normalize(Vector3.Cross(horizontalDirection, rotation.Up));
             rotation.Forward = Vector3.Normalize(Vector3.Cross(rotation.Up, rotation.Right));
-
+                       
             target = rotation.Forward;
+
+            //caso a bala saia dos limites do terreno 
+            if (bamB != null && bamB.BulletFlag)
+                if ((bamB.Position.X < 0 || bamB.Position.X > terrain.MapLimit) || (bamB.Position.Z < 0 || bamB.Position.Z > terrain.MapLimit))
+                    bamB = null;
         }
 
         public void Draw()
@@ -245,7 +251,7 @@ namespace IP3D_Fase3
 
         public Vector3 Target
         {
-            get { return target; }
+            get { return rotation.Forward; }
         }
 
         public Matrix Rotation
