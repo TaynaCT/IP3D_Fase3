@@ -23,14 +23,11 @@ namespace IP3D_Fase3
         IndexBuffer indexBuffer;
 
         List<Vector3> normalList;
-
-       // CameraSurfaceFollow camera;
-
+        
         public Map(GraphicsDevice device, ContentManager content, BasicEffect camEffect/*CameraSurfaceFollow cam*/)
-        {
-            //camera = cam;
-            worldMatrix = Matrix.Identity;/*cam.world;*/
-            effect = camEffect;/*cam.effect;*/
+        {            
+            worldMatrix = Matrix.Identity;
+            effect = camEffect;
 
             //textura do mapa
             groundTexture = content.Load<Texture2D>("grassTexture");
@@ -320,8 +317,8 @@ namespace IP3D_Fase3
 
         public void Draw(GraphicsDevice device, Matrix view, Matrix projection)
         {
-            effect.View = view/*camera.View()*/;
-            effect.Projection = projection/*camera.projection*/;
+            effect.View = view;
+            effect.Projection = projection;
             effect.World = worldMatrix;
             effect.CurrentTechnique.Passes[0].Apply();
             device.SetVertexBuffer(vertexBuffer);

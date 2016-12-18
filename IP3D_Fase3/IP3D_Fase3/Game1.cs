@@ -11,12 +11,15 @@ namespace IP3D_Fase3
     /// </summary>
     public class Game1 : Game
     {
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        //camera
+        CameraThirdPerson camera;
+        //mapa
         Map mapa;
-        CameraSurfaceFollow camera;
+        //tanks        
         ClsTank tank, tank2;
+        //particula
         Dustgen gen;
 
         public Game1()
@@ -36,8 +39,8 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
 
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            camera = new CameraSurfaceFollow(GraphicsDevice);
-            gen = new Dustgen(graphics.GraphicsDevice, camera);
+            camera = new CameraThirdPerson(GraphicsDevice);
+            //gen = new Dustgen(graphics.GraphicsDevice, camera);
             base.Initialize();
         }
 
@@ -50,8 +53,8 @@ namespace IP3D_Fase3
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mapa = new Map(GraphicsDevice, Content, camera.effect);
-            tank = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 10));
-            tank2 = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 6));
+            tank = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 10));
+            tank2 = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 6));
             
             // TODO: use this.Content to load your game content here
         }
@@ -77,11 +80,12 @@ namespace IP3D_Fase3
                 Exit();
             //new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds
 
-            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(camera.position.X, camera.position.Z));
+            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, /*mapa.SurfaceFollow(camera.position.X, camera.position.Z),*/ tank.Position);
+           
             camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
-            gen.ciclo();
+            //gen.ciclo();
 
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
@@ -130,7 +134,7 @@ namespace IP3D_Fase3
             mapa.Draw(GraphicsDevice, camera.View(), camera.projection);
             tank.Draw(camera.View(), camera.projection);
             tank2.Draw(camera.View(), camera.projection);
-            gen.Draw();
+            //gen.Draw();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

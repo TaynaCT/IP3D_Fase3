@@ -56,7 +56,7 @@ namespace IP3D_Fase3
         ContentManager content;
         GraphicsDevice device;
 
-        public ClsTank(GraphicsDevice device, ContentManager content, CameraSurfaceFollow camera, Map map, Vector2 newPlacement)
+        public ClsTank(GraphicsDevice device, ContentManager content,Map map, Vector2 newPlacement)
         {
             placement = newPlacement;            
             terrain = map;
@@ -66,8 +66,7 @@ namespace IP3D_Fase3
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
                         
             height = terrain.SurfaceFollow(placement.X, placement.Y);
-            position = new Vector3(placement.X, height, placement.Y);
-            camera = new CameraSurfaceFollow(device);
+            position = new Vector3(placement.X, height, placement.Y);          
             
             scale = 0.001f;
             myModel = content.Load<Model>("tank");

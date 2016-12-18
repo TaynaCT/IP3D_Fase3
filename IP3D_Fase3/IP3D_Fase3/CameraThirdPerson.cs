@@ -24,6 +24,7 @@ namespace IP3D_Fase3
                         
         float nearPlane = .1f;
         float farPlane = 700f;
+        float speed = .2f;
 
         public CameraThirdPerson(GraphicsDevice device)
         {
@@ -44,13 +45,29 @@ namespace IP3D_Fase3
             
         }
 
-        public void Update(Matrix tankRotationMatrix, Vector3 tankPos, Point centre, float timePassed)
+
+        public void Update(Point centre, float timePassed, Vector3 tankPos)
         {
-            position = tankRotationMatrix.Translation + (tankRotationMatrix.Backward * new Vector3(-5, 0, -5));
-            target = tankRotationMatrix.Translation;
-                       
+            Vector3 lastPos = position;
+            //rotação 
+            Vector2 mouseRotation = (Mouse.GetState().Position - centre).ToVector2() * speed * timePassed;
+            Vector3 cameraDirection = Vector3.Cross(direction, Vector3.Up);// O cross dos dois vetores devolve o vetor direção para a qual a camera deve se mover           
+
+            direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(Vector3.Up, -mouseRotation.X));
+            direction = Vector3.Transform(direction, Matrix.CreateFromAxisAngle(cameraDirection, -mouseRotation.Y));
+            
+            target = direction + position;
+            
+            position = tankPos + new Vector3(1f, .5f, 1f);
+            
+            try
+            {
+                Mouse.SetPosition(centre.X, centre.Y); // mantem o o ponteiro dentro da janela do jogo
+            }
+            catch (Exception) { }
         }
-                    
+
+
         public Matrix View()
         {
             view = Matrix.CreateLookAt(position, target, Vector3.Up);
