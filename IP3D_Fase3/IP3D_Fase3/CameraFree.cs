@@ -22,9 +22,6 @@ namespace IP3D_Fase3
         public Vector3 position;
         Vector3 up;
         private float speed;
-
-        VertexPositionNormalTexture[] vertex;
-
         float nearPlane = .1f;
         float farPlane = 700f;
 
@@ -76,9 +73,11 @@ namespace IP3D_Fase3
             position += ((Keyboard.GetState().IsKeyDown(Keys.NumPad8) ? 1 : 0) -
                          (Keyboard.GetState().IsKeyDown(Keys.NumPad5) ? 1 : 0)) * direction * .2f;
             
-            Mouse.SetPosition(centre.X, centre.Y); // mantem o o ponteiro dentro da janela do jogo
-            Console.WriteLine("centre.x: "+ centre.X + "centre.y:  " + centre.Y);//DEBUG
-            
+            try
+            {
+                Mouse.SetPosition(centre.X, centre.Y); // mantem o o ponteiro dentro da janela do jogo
+            }
+            catch (Exception) { }          
         }        
 
         public Matrix View()

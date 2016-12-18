@@ -13,8 +13,13 @@ namespace IP3D_Fase3
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //camera
-        CameraThirdPerson camera;
+        //cameras
+        CameraThirdPerson cameraTP;
+        CameraFree cameraF;
+        CameraSurfaceFollow cameraSF;
+        int selectCam;
+
+        Matrix view, projection;
         //mapa
         Map mapa;
         //tanks        
@@ -39,7 +44,10 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
 
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            camera = new CameraThirdPerson(GraphicsDevice);
+            cameraTP = new CameraThirdPerson(GraphicsDevice);
+            cameraF = new CameraFree(GraphicsDevice);
+            cameraSF = new CameraSurfaceFollow(GraphicsDevice);
+            selectCam = 1;
             //gen = new Dustgen(graphics.GraphicsDevice, camera);
             base.Initialize();
         }
@@ -52,7 +60,7 @@ namespace IP3D_Fase3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mapa = new Map(GraphicsDevice, Content, camera.effect);
+            mapa = new Map(GraphicsDevice, Content, cameraF.effect);
             tank = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 10));
             tank2 = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 6));
             
@@ -78,11 +86,13 @@ namespace IP3D_Fase3
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            //new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds
+            ////new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds
 
-            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, /*mapa.SurfaceFollow(camera.position.X, camera.position.Z),*/ tank.Rotation, tank.Position/*, mapa.NormalFollow(tank.Position.X, tank.Position.Z)*/);
-           
-            camera.View();
+            //camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, /*mapa.SurfaceFollow(camera.position.X, camera.position.Z),*/ tank.Rotation, tank.Position/*, mapa.NormalFollow(tank.Position.X, tank.Position.Z)*/);
+
+            CamSelection(gameTime);
+
+            //camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
             //gen.ciclo();
@@ -131,13 +141,43 @@ namespace IP3D_Fase3
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            mapa.Draw(GraphicsDevice, camera.View(), camera.projection);
-            tank.Draw(camera.View(), camera.projection);
-            tank2.Draw(camera.View(), camera.projection);
+            mapa.Draw(GraphicsDevice, view, projection);
+            tank.Draw(view, projection);
+            tank2.Draw(view, projection);
             //gen.Draw();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public void CamSelection(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.F1))
+                selectCam = 1;
+            else if(Keyboard.GetState().IsKeyDown(Keys.F2))
+                    selectCam = 2;
+            else if(Keyboard.GetState().IsKeyDown(Keys.F3))
+                selectCam = 3;
+
+            switch (selectCam)
+            {
+                case 1:
+                    cameraTP.Update(tank.Rotation, tank.Position);
+                    view = cameraTP.View();
+                    projection = cameraTP.projection;
+                    break;
+                case 2:
+                    cameraSF.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cameraSF.position.X, cameraSF.position.Z));
+                    view = cameraSF.View();
+                    projection = cameraSF.projection;
+                    break;
+                case 3:
+                    cameraF.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    view = cameraF.View();
+                    projection = cameraF.projection;
+                    break;
+            }
+
         }
     }
 }

@@ -146,7 +146,7 @@ namespace IP3D_Fase3
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
                         if (bamB == null)
-                            bamB = new Bullet(device, content, /*camera,*/ terrain, Position + new Vector3(0, 0.3f, 0), -Target);
+                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), -Target);
                         bamB.BulletFlag = true;
                         
                     }

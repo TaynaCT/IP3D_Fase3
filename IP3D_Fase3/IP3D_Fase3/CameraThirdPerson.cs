@@ -45,7 +45,7 @@ namespace IP3D_Fase3
         }
 
 
-        public void Update(Point centre, float timePassed, Matrix tankRotation, Vector3 tankPos)
+        public void Update(Matrix tankRotation, Vector3 tankPos)
         {
             position = tankPos + new Vector3(0, .8f, 2f);
             target = tankPos;
