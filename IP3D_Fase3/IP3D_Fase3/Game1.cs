@@ -49,7 +49,7 @@ namespace IP3D_Fase3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mapa = new Map(GraphicsDevice, Content, camera);
+            mapa = new Map(GraphicsDevice, Content, camera.effect);
             tank = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 10));
             tank2 = new ClsTank(GraphicsDevice, Content, camera, mapa, new Vector2(10, 6));
             
@@ -127,9 +127,9 @@ namespace IP3D_Fase3
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            mapa.Draw(GraphicsDevice);
-            tank.Draw();
-            tank2.Draw();
+            mapa.Draw(GraphicsDevice, camera.View(), camera.projection);
+            tank.Draw(camera.View(), camera.projection);
+            tank2.Draw(camera.View(), camera.projection);
             gen.Draw();
             // TODO: Add your drawing code here
 

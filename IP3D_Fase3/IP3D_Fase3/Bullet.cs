@@ -21,12 +21,9 @@ namespace IP3D_Fase3
        
         public float yaw = 0;
         bool bulletFlag;
-                
-        CameraSurfaceFollow camera;
         
-        public Bullet(GraphicsDevice device, ContentManager content, CameraSurfaceFollow cam, Map map, Vector3 pos, Vector3 direction)
-        {
-            camera = cam;
+        public Bullet(GraphicsDevice device, ContentManager content, Map map, Vector3 pos, Vector3 direction)
+        {            
             terrain = map;
             myBullet = content.Load<Model>("Cube");
             bulletFlag = false;
@@ -45,40 +42,36 @@ namespace IP3D_Fase3
             
             if (bulletFlag)
             {
-                position += velocity * ((float)gameTime.ElapsedGameTime.Milliseconds / 90.0f);
-                //pos.Y = pos.Y - 0.5f * GRAVITY * totalTimePassed * totalTimePassed;
+                position += velocity * ((float)gameTime.ElapsedGameTime.Milliseconds / 90.0f);                
                 position.Y -= velocity.Y * 9.8f * timePassed * timePassed;
                 Console.WriteLine(position.Y);
             }
             
         }      
 
-        public void Draw()
+        public void Draw(Matrix view, Matrix projection)
         {
             myBullet.Root.Transform = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
             worldMatrix = myBullet.Root.Transform;
 
-            //if (bulletFlag)
-            //{
-                foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
-                {
-                    Matrix world1;
+            foreach (ModelMesh mesh in myBullet.Meshes) // Desenha o modelo
+            {
+                Matrix world1;
 
-                    foreach (BasicEffect effect in mesh.Effects)
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    world1 = effect.World;
+                    effect.World = worldMatrix;
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.EnableDefaultLighting();
+                    if (bulletFlag == false)
                     {
-                        world1 = effect.World;
-                        effect.World = worldMatrix;
-                        effect.View = camera.view;
-                        effect.Projection = camera.projection;
-                        effect.EnableDefaultLighting();
-                        if (bulletFlag == false)
-                        {
-                            effect.World = Matrix.Identity;
-                        }
+                        effect.World = Matrix.Identity;
                     }
-                    mesh.Draw();
                 }
-            //}                       
+                mesh.Draw();
+            }            
         }
         
         public bool BulletFlag
