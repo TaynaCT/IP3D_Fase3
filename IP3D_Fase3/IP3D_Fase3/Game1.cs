@@ -80,7 +80,7 @@ namespace IP3D_Fase3
                 Exit();
             //new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds
 
-            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, /*mapa.SurfaceFollow(camera.position.X, camera.position.Z),*/ tank.Position, tank.Target, mapa.NormalFollow(tank.Position.X, tank.Position.Z));
+            camera.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, /*mapa.SurfaceFollow(camera.position.X, camera.position.Z),*/ tank.Rotation, tank.Position/*, mapa.NormalFollow(tank.Position.X, tank.Position.Z)*/);
            
             camera.View();
             tank.Update(1, gameTime);
