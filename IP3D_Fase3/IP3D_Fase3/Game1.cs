@@ -23,15 +23,15 @@ namespace IP3D_Fase3
         Matrix view, projection;
         //mapa
         Map mapa;
-<<<<<<< HEAD
+
         //tanks       
         Player1 tank;
         Enemy tank2;
         //particula
-=======
+
         //tanks        
         ClsTank tank, tank2;
->>>>>>> origin/master
+
         Dustgen gen;
         
         public Game1()
@@ -70,13 +70,12 @@ namespace IP3D_Fase3
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mapa = new Map(GraphicsDevice, Content, cameraF.effect);
-<<<<<<< HEAD
+
             tank = new Player1(GraphicsDevice, Content, mapa, new Vector2(10, 10));
             tank2 = new Enemy(GraphicsDevice, Content, mapa, new Vector2(10, 6));
-=======
+
             tank = new ClsTank(GraphicsDevice, Content, mapa, gen, new Vector2(10, 10));
             tank2 = new ClsTank(GraphicsDevice, Content, mapa, gen, new Vector2(10, 6));
->>>>>>> origin/master
             
             // TODO: use this.Content to load your game content here
         }
@@ -102,17 +101,17 @@ namespace IP3D_Fase3
                 Exit();
             
             CamSelection(gameTime);
-<<<<<<< HEAD
+
                        
             tank.Update(gameTime);
             tank2.Update(gameTime);
             gen.ciclo();
-=======
+
 
             //camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
->>>>>>> origin/master
+
 
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
@@ -155,13 +154,12 @@ namespace IP3D_Fase3
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-<<<<<<< HEAD
 
             mapa.Draw(GraphicsDevice, view, projection);
             gen.Draw();
             tank.Draw(view, projection);
             tank2.Draw(view, projection);
-=======
+
             Viewport original = graphics.GraphicsDevice.Viewport;
             if (selectCam == 1)
             {
@@ -170,7 +168,6 @@ namespace IP3D_Fase3
                 tank2.Draw(player1Cam.View(), player1Cam.projection);
                 mapa.Draw(GraphicsDevice, player1Cam.View(), player1Cam.projection);
 
-<<<<<<< Updated upstream
                 graphics.GraphicsDevice.Viewport = player2ViewPort;
                 tank2.Draw(player2Cam.View(), player2Cam.projection);
                 tank.Draw(player2Cam.View(), player2Cam.projection);
@@ -180,13 +177,11 @@ namespace IP3D_Fase3
             else
             {
                 mapa.Draw(GraphicsDevice, view, projection);
-=======
+
             mapa.Draw(GraphicsDevice, view, projection);
             tank.Draw(view, projection);
             tank2.Draw(view, projection);
             // TODO: Add your drawing code here
->>>>>>> Stashed changes
->>>>>>> origin/master
 
                 // TODO: Add your drawing code here
             
