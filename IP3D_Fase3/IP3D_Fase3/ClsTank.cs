@@ -11,50 +11,53 @@ using System.Threading.Tasks;
 namespace IP3D_Fase3
 {
     class ClsTank
-    {               
-        Model myModel;               
-        Bullet bamB;
-        public float scale;    
+    {
+        protected Model myModel;
+        protected Bullet bamB;
+        public float scale;
 
         //bones
-        ModelBone turretBone;
-        ModelBone cannonBone;
-        ModelBone rFrontWheel;
-        ModelBone lFrontWheel;
-        ModelBone lBackWheel;
-        ModelBone rBackWheel;
-        ModelBone rFrontSteer;
-        ModelBone lFrontSteer;
-        
+        protected ModelBone turretBone;
+        protected ModelBone cannonBone;
+        protected ModelBone rFrontWheel;
+        protected ModelBone lFrontWheel;
+        protected ModelBone lBackWheel;
+        protected ModelBone rBackWheel;
+        protected ModelBone rFrontSteer;
+        protected ModelBone lFrontSteer;
+
         // Transformações iniciais
         // (posicionar torre e canhão)
-        Matrix cannonTransform;
-        Matrix turretTransform;
-        Matrix rFrontwheelTransform;
-        Matrix lFrontWheelTransform;
-        Matrix lBackWheelTransform;
-        Matrix rBackWheelTransform;
+        protected Matrix cannonTransform;
+        protected Matrix turretTransform;
+        protected Matrix rFrontwheelTransform;
+        protected Matrix lFrontWheelTransform;
+        protected Matrix lBackWheelTransform;
+        protected Matrix rBackWheelTransform;
        // Guarda todas as transformações
         Matrix[] boneTransforms;
 
-        Matrix rotation; // rotação do tank
-        
-        float height;
-        float turretRotation;
-        float cannonRotation;
-        float wheelRotation;
-        float yaw;
-                        
-        Vector3 position, lastPosition;
-        Vector3 target;
-                
-        Map terrain;
-        
-        public Vector2 placement;
-        Vector3 direction;
-        
-        ContentManager content;
-        GraphicsDevice device;
+        protected Matrix rotation; // rotação do tank
+
+        protected float height;
+        protected float turretRotation;
+        protected float cannonRotation;
+        protected float wheelRotation;
+        protected float yaw;
+
+        protected Vector3 position, lastPosition;
+        protected Vector3 target;
+
+        protected Map terrain;
+
+        protected Vector2 placement;
+        protected Vector3 direction;
+
+        protected ContentManager content;
+        protected GraphicsDevice device;
+
+        protected float directionX;
+        protected float directionZ;
 
         public ClsTank(GraphicsDevice device, ContentManager content,Map map, Vector2 newPlacement)
         {
@@ -97,99 +100,99 @@ namespace IP3D_Fase3
             wheelRotation = .5f;
         }
 
-        public void Update(int num, GameTime gameTime)
+        public void Update(/*int num,*/ GameTime gameTime)
         {
             lastPosition = position;
-            switch (num)
-            {
-                case 1:
-                    turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.Right) ? 1 : 0) -
-                              (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.02f;
+            ////switch (num)
+            ////{
+            //    case 1:
+            //        turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.Right) ? 1 : 0) -
+            //                  (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.02f;
 
-                    cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Up) ? 1 : 0) -
-                                  (Keyboard.GetState().IsKeyDown(Keys.Down) ? 1 : 0)) * -.02f;
-                    break;
-                case 2:
-                    turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.O) ? 1 : 0) -
-                              (Keyboard.GetState().IsKeyDown(Keys.U) ? 1 : 0)) * -.02f;
+            //        cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Up) ? 1 : 0) -
+            //                      (Keyboard.GetState().IsKeyDown(Keys.Down) ? 1 : 0)) * -.02f;
+            //        break;
+            //    case 2:
+            //        turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.O) ? 1 : 0) -
+            //                  (Keyboard.GetState().IsKeyDown(Keys.U) ? 1 : 0)) * -.02f;
 
-                    cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Y) ? 1 : 0) -
-                                  (Keyboard.GetState().IsKeyDown(Keys.H) ? 1 : 0)) * -.02f;
-                    break;
-            }
+            //        cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Y) ? 1 : 0) -
+            //                      (Keyboard.GetState().IsKeyDown(Keys.H) ? 1 : 0)) * -.02f;
+            //        break;
+            //}
 
-            float directionX = (float)Math.Sin(yaw);
-            float directionZ = (float)Math.Cos(yaw);
+            //float directionX = (float)Math.Sin(yaw);
+            //float directionZ = (float)Math.Cos(yaw);
 
-            switch (num)
-            {
-                case 1:
-                    //andar com o tank
-                    if (Keyboard.GetState().IsKeyDown(Keys.W))
-                    {
-                        position += new Vector3(directionX, 0, directionZ) * .02f;
-                        wheelRotation += .2f; //rotação das rodas
-                        position.Y = terrain.SurfaceFollow(position.X, position.Z);
-                    }
-                    if (Keyboard.GetState().IsKeyDown(Keys.S))
-                    {
-                        position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
-                        wheelRotation -= .2f;
-                    }
+            //switch (num)
+            //{
+            //    case 1:
+            //        //andar com o tank
+            //        if (Keyboard.GetState().IsKeyDown(Keys.W))
+            //        {
+            //            position += new Vector3(directionX, 0, directionZ) * .02f;
+            //            wheelRotation += .2f; //rotação das rodas
+            //            position.Y = terrain.SurfaceFollow(position.X, position.Z);
+            //        }
+            //        if (Keyboard.GetState().IsKeyDown(Keys.S))
+            //        {
+            //            position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+            //            wheelRotation -= .2f;
+            //        }
 
-                    //rodar o tanque
-                    if (Keyboard.GetState().IsKeyDown(Keys.A))
-                        yaw += .05f;
+            //        //rodar o tanque
+            //        if (Keyboard.GetState().IsKeyDown(Keys.A))
+            //            yaw += .05f;
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.D))
-                        yaw -= .05f;
-                    //BULLET 
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                    {
-                        if (bamB == null)
-                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
-                        bamB.BulletFlag = true;
+            //        if (Keyboard.GetState().IsKeyDown(Keys.D))
+            //            yaw -= .05f;
+            //        //BULLET 
+            //        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            //        {
+            //            if (bamB == null)
+            //                bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
+            //            bamB.BulletFlag = true;
                         
-                    }
+            //        }
 
-                    if (bamB != null && bamB.BulletFlag)
-                        bamB.bulletUpdate(gameTime);
+            //        if (bamB != null && bamB.BulletFlag)
+            //            bamB.bulletUpdate(gameTime);
 
-                    break;
+            //        break;
 
-                case 2:
-                    //andar com o tank
-                    if (Keyboard.GetState().IsKeyDown(Keys.I))
-                    {
-                        position += new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
-                        wheelRotation += .2f; //rotação das rodas
-                    }
-                    if (Keyboard.GetState().IsKeyDown(Keys.K))
-                    {
-                        position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
-                        wheelRotation -= .2f;
-                    }
+            //    case 2:
+            //        //andar com o tank
+            //        if (Keyboard.GetState().IsKeyDown(Keys.I))
+            //        {
+            //            position += new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+            //            wheelRotation += .2f; //rotação das rodas
+            //        }
+            //        if (Keyboard.GetState().IsKeyDown(Keys.K))
+            //        {
+            //            position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+            //            wheelRotation -= .2f;
+            //        }
 
-                    //rodar o tanque
-                    if (Keyboard.GetState().IsKeyDown(Keys.J))
-                        yaw += .05f;
+            //        //rodar o tanque
+            //        if (Keyboard.GetState().IsKeyDown(Keys.J))
+            //            yaw += .05f;
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.L))
-                        yaw -= .05f;
+            //        if (Keyboard.GetState().IsKeyDown(Keys.L))
+            //            yaw -= .05f;
 
-                    //BULLET 
-                    if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
-                    {
-                        if (bamB == null)
-                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
-                        bamB.BulletFlag = true;                       
-                    }
+            //        //BULLET 
+            //        if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
+            //        {
+            //            if (bamB == null)
+            //                bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
+            //            bamB.BulletFlag = true;                       
+            //        }
 
-                    if (bamB != null && bamB.BulletFlag)
-                        bamB.bulletUpdate(gameTime);
+            //        if (bamB != null && bamB.BulletFlag)
+            //            bamB.bulletUpdate(gameTime);
 
-                    break;
-            }
+            //        break;
+            //}
 
             //põe o tank em cima do terreno
             position.Y = terrain.SurfaceFollow(position.X, position.Z);
