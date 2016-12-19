@@ -59,7 +59,7 @@ namespace IP3D_Fase3
         public void Draw()
         {
             effect.World = Matrix.Identity;
-            //effect.View = cam.;
+            effect.View = cam.view;
             effect.Projection = cam.projection;
 
             effect.CurrentTechnique.Passes[0].Apply();

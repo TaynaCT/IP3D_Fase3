@@ -17,7 +17,7 @@ namespace IP3D_Fase3
         CameraThirdPerson cameraTP;
         CameraFree cameraF;
         CameraSurfaceFollow cameraSF;
-        int selectCam;
+        int selectCam = 2;
 
         Matrix view, projection;
         //mapa
@@ -48,7 +48,7 @@ namespace IP3D_Fase3
             cameraF = new CameraFree(GraphicsDevice);
             cameraSF = new CameraSurfaceFollow(GraphicsDevice);
             selectCam = 1;
-            //gen = new Dustgen(graphics.GraphicsDevice, camera);
+            gen = new Dustgen(graphics.GraphicsDevice, cameraSF);
             base.Initialize();
         }
 
@@ -95,7 +95,7 @@ namespace IP3D_Fase3
             //camera.View();
             tank.Update(1, gameTime);
             tank2.Update(2, gameTime);
-            //gen.ciclo();
+            gen.ciclo();
 
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
@@ -113,7 +113,6 @@ namespace IP3D_Fase3
                 {
                     tank2.GetSetBullet.BulletFlag = false;
                     tank2.GetSetBullet = null;
-                    
                 }
                
             }
@@ -139,12 +138,13 @@ namespace IP3D_Fase3
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             mapa.Draw(GraphicsDevice, view, projection);
+
+            gen.Draw();
             tank.Draw(view, projection);
             tank2.Draw(view, projection);
-            //gen.Draw();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
