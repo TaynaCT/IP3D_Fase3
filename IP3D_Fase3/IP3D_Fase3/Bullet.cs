@@ -16,7 +16,7 @@ namespace IP3D_Fase3
         Matrix worldMatrix;         
         Map terrain;        
         Vector3 position, inicialPos;
-        Vector3 speed, velocity;
+        Vector3 velocity;
         public float scale;
        
         public float yaw = 0;
