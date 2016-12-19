@@ -13,9 +13,14 @@ namespace IP3D_Fase3
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
+        Viewport player1ViewPort;
+        Viewport player2ViewPort;
+
         //cameras
-        CameraThirdPerson cameraTP;
+        //CameraThirdPerson cameraTP;
+        CameraThirdPerson player1Cam;
+        CameraThirdPerson player2Cam;
         CameraFree cameraF;
         CameraSurfaceFollow cameraSF;
         int selectCam = 2;
@@ -27,6 +32,8 @@ namespace IP3D_Fase3
         ClsTank tank, tank2;
         //particula
         Dustgen gen;
+
+
 
         public Game1()
         {
@@ -48,7 +55,25 @@ namespace IP3D_Fase3
         {
             // TODO: Add your initialization logic here           
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            cameraTP = new CameraThirdPerson(GraphicsDevice);
+            //cameraTP = new CameraThirdPerson(GraphicsDevice);
+
+            //definição do viewport de cada jogador
+            player1ViewPort = new Viewport();
+            player1ViewPort.X = 0;
+            player1ViewPort.Y = 0;
+            player1ViewPort.Width = GraphicsDevice.Viewport.Width / 2;
+            player1ViewPort.Height = GraphicsDevice.Viewport.Height;
+            player1ViewPort.MinDepth = 0;
+            player2ViewPort.MaxDepth = 1;
+
+            player2ViewPort = new Viewport();
+            player2ViewPort.X = GraphicsDevice.Viewport.Width / 2;
+            player2ViewPort.Y = 0;
+            player2ViewPort.Width = GraphicsDevice.Viewport.Width / 2;
+            player2ViewPort.Height = GraphicsDevice.Viewport.Height;
+            player2ViewPort.MinDepth = 0;
+            player2ViewPort.MaxDepth = 1;
+
             cameraF = new CameraFree(GraphicsDevice);
             cameraSF = new CameraSurfaceFollow(GraphicsDevice);
             selectCam = 1;
