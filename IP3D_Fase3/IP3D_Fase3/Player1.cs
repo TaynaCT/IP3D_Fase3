@@ -23,13 +23,13 @@ namespace IP3D_Fase3
         }
 
         public void Update(GameTime gameTime)
-        {            
+        {
 
             turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.Right) ? 1 : 0) -
                               (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.02f;
 
             cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Up) ? 1 : 0) -
-                          (Keyboard.GetState().IsKeyDown(Keys.Down) ? 1 : 0)) * -.02f;           
+                          (Keyboard.GetState().IsKeyDown(Keys.Down) ? 1 : 0)) * -.02f;
 
             //andar com o tank
             if (Keyboard.GetState().IsKeyDown(Keys.W))
@@ -44,7 +44,7 @@ namespace IP3D_Fase3
             {
                 position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                 wheelRotation -= .2f;
-                
+
             }
 
             //rodar o tanque
@@ -78,5 +78,5 @@ namespace IP3D_Fase3
         }
     }
 
-    }
 }
+

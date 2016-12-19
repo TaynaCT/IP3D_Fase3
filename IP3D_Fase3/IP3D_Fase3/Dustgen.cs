@@ -32,7 +32,7 @@ namespace IP3D_Fase3
             dust = new List<Particle>();
         }
 
-        public void ciclo(float dx, float dz, float px, float alt, float pz)
+        public void Ciclo(float dx, float dz, float px, float alt, float pz)
         {
 
             for (int i = 0; i < 10f; i++)
