@@ -12,7 +12,7 @@ namespace IP3D_Fase3
     {
         BasicEffect effect;
         int particulas;
-        float raio, comprimento, largura;
+        float raio;
         List<Particle> dust;
         GraphicsDevice dev;
         Random rnd;
@@ -22,11 +22,8 @@ namespace IP3D_Fase3
         {
             effect = new BasicEffect(d);
             effect.VertexColorEnabled = true;
-            particulas = 10000;
-            raio = 0.6f;
-            comprimento = 1f;
-            largura = 1f;
-
+            particulas = 10000;//n de particulas geradas
+            raio = 0.6f;//raio em que estao dispersas as particulas ao iniciar
             this.dev = d;
             rnd = new Random();
             dust = new List<Particle>();
@@ -38,7 +35,7 @@ namespace IP3D_Fase3
             for (int i = 0; i < 10f; i++)
                 if (dust.Count < particulas)
                 {
-                    dust.Add(new Particle(dev, rnd, raio, alt,dx,dz, px, pz));
+                    dust.Add(new Particle(dev, rnd, raio, alt,dx,dz, px, pz));// adiciona novas particulas
                 }
                 else
                     break;
@@ -48,7 +45,7 @@ namespace IP3D_Fase3
                 dust[i].Update();
                 if (dust[i].Height < 0)
                 {
-                    dust.RemoveAt(i);
+                    dust.RemoveAt(i);   // este ciclo mata as particulas dependendo da altura em que se encontram.
                 }
             }
         }
@@ -62,7 +59,8 @@ namespace IP3D_Fase3
             effect.CurrentTechnique.Passes[0].Apply();
 
             VertexPositionColor[] vertices = new VertexPositionColor[dust.Count * 2];
-
+          
+            //vertices das particulas
             for(int i = 0; i< dust.Count; i++)
             {
                 vertices[i * 2] =new VertexPositionColor(dust[i].Pos, Color.White);
@@ -70,7 +68,7 @@ namespace IP3D_Fase3
                 vertices[i * 2 + 1] = new VertexPositionColor(new Vector3(dust[i].Pos.X, dust[i].Pos.Y + 0.05f, dust[i].Pos.Z), Color.White);
             }
                 if(vertices.Length>0)
-                dev.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, dust.Count);
+                    dev.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, dust.Count);
         }
     }
 }   
