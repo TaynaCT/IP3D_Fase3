@@ -13,6 +13,7 @@ namespace IP3D_Fase3
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        
         //cameras
         CameraThirdPerson cameraTP;
         CameraFree cameraF;
@@ -30,6 +31,10 @@ namespace IP3D_Fase3
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1800;
+            graphics.PreferredBackBufferHeight = 900;
+            graphics.ApplyChanges();
+
             Content.RootDirectory = "Content";
         }
 
@@ -42,7 +47,6 @@ namespace IP3D_Fase3
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here           
-
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             cameraTP = new CameraThirdPerson(GraphicsDevice);
             cameraF = new CameraFree(GraphicsDevice);

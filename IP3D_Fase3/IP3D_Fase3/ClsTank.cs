@@ -127,8 +127,9 @@ namespace IP3D_Fase3
                     //andar com o tank
                     if (Keyboard.GetState().IsKeyDown(Keys.W))
                     {
-                        position += new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+                        position += new Vector3(directionX, 0, directionZ) * .02f;
                         wheelRotation += .2f; //rotação das rodas
+                        position.Y = terrain.SurfaceFollow(position.X, position.Z);
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
@@ -146,7 +147,7 @@ namespace IP3D_Fase3
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
                         if (bamB == null)
-                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), -Target);
+                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
                         bamB.BulletFlag = true;
                         
                     }
@@ -180,7 +181,7 @@ namespace IP3D_Fase3
                     if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
                     {
                         if (bamB == null)
-                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), -Target);
+                            bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
                         bamB.BulletFlag = true;                       
                     }
 
@@ -196,12 +197,13 @@ namespace IP3D_Fase3
             //direciona o tank
             rotation = Matrix.Identity;
             rotation.Up = terrain.NormalFollow(position.X, position.Z);
-            Vector3 horizontalDirection = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromAxisAngle(rotation.Up, yaw));
+            //Vector3 horizontalDirection = Vector3.Transform(new Vector3(0, 0, -1), Matrix.CreateFromAxisAngle(rotation.Up, yaw));
+            Vector3 horizontalDirection = new Vector3(directionX, 0, directionZ);
             rotation.Right = Vector3.Normalize(Vector3.Cross(horizontalDirection, rotation.Up));
             rotation.Forward = Vector3.Normalize(Vector3.Cross(rotation.Up, rotation.Right));
                        
             target = rotation.Forward;
-
+           
             //caso a bala saia dos limites do terreno 
             if (bamB != null && bamB.BulletFlag)
                 if ((bamB.Position.X < 0 || bamB.Position.X > terrain.MapLimit) || (bamB.Position.Z < 0 || bamB.Position.Z > terrain.MapLimit))
@@ -211,7 +213,7 @@ namespace IP3D_Fase3
         public void Draw(Matrix view, Matrix projection)
         {        
             // Aplica as transformações em cascata por todos os bones       
-            myModel.Root.Transform = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
+            myModel.Root.Transform = Matrix.CreateScale(scale) * Matrix.CreateRotationY(MathHelper.Pi) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
             cannonBone.Transform = Matrix.CreateRotationX(cannonRotation) * cannonTransform;
             rFrontWheel.Transform = Matrix.CreateRotationX(wheelRotation) * rFrontwheelTransform;

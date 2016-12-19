@@ -34,7 +34,7 @@ namespace IP3D_Fase3
 
             position = Vector3.Zero;
 
-            direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
+            //direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
             up = Vector3.Up;
                         
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 
@@ -47,7 +47,7 @@ namespace IP3D_Fase3
 
         public void Update(Matrix tankRotation, Vector3 tankPos)
         {
-            position = tankPos + new Vector3(0, .8f, 2f);
+            position = tankPos - tankRotation.Forward * 2f + tankRotation.Up * .8f;/* + new Vector3(0, .8f, 2f)*/;
             target = tankPos;
         }
 
