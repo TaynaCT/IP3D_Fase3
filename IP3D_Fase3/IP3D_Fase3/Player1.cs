@@ -12,12 +12,15 @@ namespace IP3D_Fase3
 {
     class Player1 : ClsTank
     {
+        Dustgen generator;
+
         public Player1(GraphicsDevice device, ContentManager content, Map map, Vector2 newPlacement)
             : base(device, content, map, newPlacement)
         {
+            generator = new Dustgen(device);
             directionX = (float)Math.Sin(yaw);
             directionZ = (float)Math.Cos(yaw);
-    }
+        }
 
         public void Update(GameTime gameTime)
         {            
@@ -34,11 +37,14 @@ namespace IP3D_Fase3
                 position += new Vector3(directionX, 0, directionZ) * .02f;
                 wheelRotation += .2f; //rotação das rodas
                 position.Y = terrain.SurfaceFollow(position.X, position.Z);
+
+                generator.Ciclo(directionX, directionZ, position.X, terrain.SurfaceFollow(position.X, position.Z), position.Z);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                 wheelRotation -= .2f;
+                
             }
 
             //rodar o tanque
@@ -68,7 +74,9 @@ namespace IP3D_Fase3
         public void Draw(Matrix view, Matrix projection)
         {
             base.Draw(view, projection);
+            generator.Draw(view, projection);
         }
+    }
 
     }
 }

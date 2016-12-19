@@ -28,10 +28,7 @@ namespace IP3D_Fase3
         Player1 tank;
         Enemy tank2;
         //particula
-
-        //tanks        
-        ClsTank tank, tank2;
-
+             
         Dustgen gen;
         
         public Game1()
@@ -73,10 +70,7 @@ namespace IP3D_Fase3
 
             tank = new Player1(GraphicsDevice, Content, mapa, new Vector2(10, 10));
             tank2 = new Enemy(GraphicsDevice, Content, mapa, new Vector2(10, 6));
-
-            tank = new ClsTank(GraphicsDevice, Content, mapa, gen, new Vector2(10, 10));
-            tank2 = new ClsTank(GraphicsDevice, Content, mapa, gen, new Vector2(10, 6));
-            
+                             
             // TODO: use this.Content to load your game content here
         }
 
@@ -106,13 +100,7 @@ namespace IP3D_Fase3
             tank.Update(gameTime);
             tank2.Update(gameTime);
             gen.ciclo();
-
-
-            //camera.View();
-            tank.Update(1, gameTime);
-            tank2.Update(2, gameTime);
-
-
+            
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
                 tank.Position = tank.LasPosition;
@@ -156,34 +144,12 @@ namespace IP3D_Fase3
             GraphicsDevice.Clear(Color.Black);
 
             mapa.Draw(GraphicsDevice, view, projection);
-            gen.Draw();
+            gen.Draw(view, projection);
             tank.Draw(view, projection);
             tank2.Draw(view, projection);
+                  
 
-            Viewport original = graphics.GraphicsDevice.Viewport;
-            if (selectCam == 1)
-            {
-                graphics.GraphicsDevice.Viewport = player1ViewPort;
-                tank.Draw(player1Cam.View(), player1Cam.projection);
-                tank2.Draw(player1Cam.View(), player1Cam.projection);
-                mapa.Draw(GraphicsDevice, player1Cam.View(), player1Cam.projection);
-
-                graphics.GraphicsDevice.Viewport = player2ViewPort;
-                tank2.Draw(player2Cam.View(), player2Cam.projection);
-                tank.Draw(player2Cam.View(), player2Cam.projection);
-                mapa.Draw(GraphicsDevice, player2Cam.View(), player2Cam.projection);
-
-            }
-            else
-            {
-                mapa.Draw(GraphicsDevice, view, projection);
-
-            mapa.Draw(GraphicsDevice, view, projection);
-            tank.Draw(view, projection);
-            tank2.Draw(view, projection);
-            // TODO: Add your drawing code here
-
-                // TODO: Add your drawing code here
+             // TODO: Add your drawing code here
             
             base.Draw(gameTime);
         }
