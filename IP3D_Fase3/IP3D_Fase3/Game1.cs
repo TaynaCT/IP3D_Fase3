@@ -29,7 +29,7 @@ namespace IP3D_Fase3
         Enemy tank2;
         //particula
              
-        Dustgen gen;
+        //Dustgen gen;
         
         public Game1()
         {
@@ -99,7 +99,7 @@ namespace IP3D_Fase3
                        
             tank.Update(gameTime);
             tank2.Update(gameTime);
-            gen.ciclo();
+            //gen.ciclo();
             
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
@@ -144,7 +144,7 @@ namespace IP3D_Fase3
             GraphicsDevice.Clear(Color.Black);
 
             mapa.Draw(GraphicsDevice, view, projection);
-            gen.Draw(view, projection);
+            //gen.Draw(view, projection);
             tank.Draw(view, projection);
             tank2.Draw(view, projection);
                   

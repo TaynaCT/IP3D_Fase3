@@ -36,13 +36,13 @@ namespace IP3D_Fase3
                 position += new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                 wheelRotation += .2f; //rotação das rodas
               
-                generator.Ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ);
+                //generator.Ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
                 position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                 wheelRotation -= .2f;
-                generator.Ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ);
+               // generator.Ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ);
             }
 
             //rodar o tanque
