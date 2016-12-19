@@ -12,7 +12,7 @@ namespace IP3D_Fase3
 {
     class CameraSurfaceFollow
     {
-        public Matrix view; 
+        Matrix view; 
         public Matrix projection { get; protected set; }
         public Matrix world;
 
@@ -22,9 +22,7 @@ namespace IP3D_Fase3
         public Vector3 position;
         Vector3 up;
         private float speed;
-
-        VertexPositionNormalTexture[] vertex;
-
+        
         float nearPlane = .1f;
         float farPlane = 700f;
 

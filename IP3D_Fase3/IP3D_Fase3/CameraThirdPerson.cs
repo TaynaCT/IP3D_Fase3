@@ -17,40 +17,30 @@ namespace IP3D_Fase3
         public Matrix world;
 
         public BasicEffect effect;
-        Vector3 target;        
-        Vector3 direction;
+        Vector3 target;                
         Vector3 position;
         Vector3 up;
                         
         float nearPlane = .1f;
         float farPlane = 700f;
-        float speed = .2f;
-
+        
         public CameraThirdPerson(GraphicsDevice device)
         {
             world = Matrix.Identity;
-
             effect = new BasicEffect(device);
-
-            position = Vector3.Zero;
-
-            //direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
-            up = Vector3.Up;
-                        
+            position = Vector3.Zero;                        
+            up = Vector3.Up;                        
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 
                                                             (float)device.Viewport.Width / (float)device.Viewport.Height, 
                                                             nearPlane, 
-                                                            farPlane);
-            
+                                                            farPlane);            
         }
-
 
         public void Update(Matrix tankRotation, Vector3 tankPos)
         {
-            position = tankPos - tankRotation.Forward * 2f + tankRotation.Up * .8f;/* + new Vector3(0, .8f, 2f)*/;
+            position = tankPos - tankRotation.Forward * 2f + tankRotation.Up * .8f;
             target = tankPos;
         }
-
 
         public Matrix View()
         {

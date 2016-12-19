@@ -35,7 +35,7 @@ namespace IP3D_Fase3
         protected Matrix lBackWheelTransform;
         protected Matrix rBackWheelTransform;
        // Guarda todas as transformações
-        Matrix[] boneTransforms;
+        protected Matrix[] boneTransforms;
 
 
         protected Matrix rotation; // rotação do tank
@@ -59,22 +59,16 @@ namespace IP3D_Fase3
 
         protected float directionX;
         protected float directionZ;
-
-        //Dustgen generator;
         
-
-        public ClsTank(GraphicsDevice device, ContentManager content,Map map,/*Dustgen gen, */Vector2 newPlacement)
+        public ClsTank(GraphicsDevice device, ContentManager content,Map map, Vector2 newPlacement)
         {
             placement = newPlacement;            
             terrain = map;
-            //this.generator = gen;
-
+            
             yaw = 0;
             this.content = content;
             this.device = device;
-
-            //generator = new Dustgen(device);
-
+            
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);          
             
@@ -108,8 +102,7 @@ namespace IP3D_Fase3
         }
 
         public void Update(/*int num,*/ GameTime gameTime)
-        {
- 
+        { 
             lastPosition = position;
 
             //põe o tank em cima do terreno
@@ -134,8 +127,7 @@ namespace IP3D_Fase3
 
 
         public void Draw(Matrix view, Matrix projection)
-        {        
-
+        {
             // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * Matrix.CreateRotationY(MathHelper.Pi) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;

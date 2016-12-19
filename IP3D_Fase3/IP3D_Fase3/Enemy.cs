@@ -52,16 +52,16 @@ namespace IP3D_Fase3
             if (Keyboard.GetState().IsKeyDown(Keys.L))
                 yaw -= .05f;
 
-            //BULLET 
-            if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
-            {
-                if (bamB == null)
-                    bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
-                bamB.BulletFlag = true;
-            }
+            ////BULLET 
+            //if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
+            //{
+            //    if (bamB == null)
+            //        bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
+            //    bamB.BulletFlag = true;
+            //}
 
-            if (bamB != null && bamB.BulletFlag)
-                bamB.bulletUpdate(gameTime);
+            //if (bamB != null && bamB.BulletFlag)
+            //    bamB.bulletUpdate(gameTime);
         }
 
         public void Draw(Matrix view, Matrix projection)
