@@ -49,22 +49,26 @@ namespace IP3D_Fase3
         Vector3 target;
                 
         Map terrain;
-        
+        Dustgen generator;
+
         public Vector2 placement;
         Vector3 direction;
         
         ContentManager content;
         GraphicsDevice device;
 
-        public ClsTank(GraphicsDevice device, ContentManager content,Map map, Vector2 newPlacement)
+        public ClsTank(GraphicsDevice device, ContentManager content,Map map,Dustgen gen, Vector2 newPlacement)
         {
             placement = newPlacement;            
             terrain = map;
+            this.generator = gen;
+
             yaw = 0;
             this.content = content;
             this.device = device;
-            direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
-                        
+
+            generator = new Dustgen(device);
+
             height = terrain.SurfaceFollow(placement.X, placement.Y);
             position = new Vector3(placement.X, height, placement.Y);          
             
@@ -99,6 +103,7 @@ namespace IP3D_Fase3
 
         public void Update(int num, GameTime gameTime)
         {
+ 
             lastPosition = position;
             switch (num)
             {
@@ -129,12 +134,17 @@ namespace IP3D_Fase3
                     {
                         position += new Vector3(directionX, 0, directionZ) * .02f;
                         wheelRotation += .2f; //rotação das rodas
+<<<<<<< Updated upstream
                         position.Y = terrain.SurfaceFollow(position.X, position.Z);
+=======
+                        generator.ciclo(directionX, directionZ, position.X, terrain.SurfaceFollow(position.X, position.Z), position.Z);
+>>>>>>> Stashed changes
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.S))
                     {
                         position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                         wheelRotation -= .2f;
+                       // gen.ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z)+0.1f, directionZ);
                     }
 
                     //rodar o tanque
@@ -163,11 +173,14 @@ namespace IP3D_Fase3
                     {
                         position += new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                         wheelRotation += .2f; //rotação das rodas
+                       // generator.ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ);
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.K))
                     {
                         position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
                         wheelRotation -= .2f;
+                      //  generator.ciclo(directionX, terrain.SurfaceFollow(position.X, position.Z) + 0.1, directionZ);
+                        
                     }
 
                     //rodar o tanque
@@ -177,7 +190,7 @@ namespace IP3D_Fase3
                     if (Keyboard.GetState().IsKeyDown(Keys.L))
                         yaw -= .05f;
 
-                    //BULLET 
+                       //BULLET 
                     if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
                     {
                         if (bamB == null)
@@ -187,7 +200,6 @@ namespace IP3D_Fase3
 
                     if (bamB != null && bamB.BulletFlag)
                         bamB.bulletUpdate(gameTime);
-
                     break;
             }
 
@@ -210,8 +222,11 @@ namespace IP3D_Fase3
                     bamB = null;
         }
 
+
+
         public void Draw(Matrix view, Matrix projection)
         {        
+
             // Aplica as transformações em cascata por todos os bones       
             myModel.Root.Transform = Matrix.CreateScale(scale) * Matrix.CreateRotationY(MathHelper.Pi) * rotation * Matrix.CreateTranslation(position);
             turretBone.Transform = Matrix.CreateRotationY(turretRotation) * turretTransform;
@@ -222,7 +237,7 @@ namespace IP3D_Fase3
             rBackWheel.Transform = Matrix.CreateRotationX(wheelRotation) * rBackWheelTransform;
             
             myModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
-                        
+
             foreach (ModelMesh mesh in myModel.Meshes) // Desenha o modelo
             {
                 foreach (BasicEffect effect in mesh.Effects)
@@ -237,6 +252,8 @@ namespace IP3D_Fase3
 
             if (bamB!= null && bamB.BulletFlag) 
                 bamB.Draw(view, projection);
+
+                generator.Draw(view, projection);
         }
 
         public Vector3 Position

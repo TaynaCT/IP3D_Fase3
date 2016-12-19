@@ -12,36 +12,33 @@ namespace IP3D_Fase3
     {
         BasicEffect effect;
         int particulas;
-        float raio, comprimento, largura, altura;
+        float raio, comprimento, largura;
         List<Particle> dust;
         GraphicsDevice dev;
-        CameraSurfaceFollow cam;
         Random rnd;
         
 
-        public Dustgen(GraphicsDevice d,CameraSurfaceFollow c)
+        public Dustgen(GraphicsDevice d)
         {
             effect = new BasicEffect(d);
             effect.VertexColorEnabled = true;
-            particulas = 1000;
-            raio = 6f;
-            comprimento = 6f;
-            largura = 10f;
-            altura = 20f;
+            particulas = 10000;
+            raio = 0.6f;
+            comprimento = 1f;
+            largura = 1f;
 
-            this.cam = c;
             this.dev = d;
             rnd = new Random();
             dust = new List<Particle>();
         }
 
-        public void ciclo()
+        public void ciclo(float dx, float dz, float px, float alt, float pz)
         {
 
             for (int i = 0; i < 10f; i++)
                 if (dust.Count < particulas)
                 {
-                    dust.Add(new Particle(dev, rnd, raio, altura));
+                    dust.Add(new Particle(dev, rnd, raio, alt,dx,dz, px, pz));
                 }
                 else
                     break;
@@ -56,11 +53,11 @@ namespace IP3D_Fase3
             }
         }
 
-        public void Draw()
+        public void Draw(Matrix view, Matrix projection)
         {
             effect.World = Matrix.Identity;
-            effect.View = cam.view;
-            effect.Projection = cam.projection;
+            effect.View = view;
+            effect.Projection = projection;
 
             effect.CurrentTechnique.Passes[0].Apply();
 
@@ -70,9 +67,10 @@ namespace IP3D_Fase3
             {
                 vertices[i * 2] =new VertexPositionColor(dust[i].Pos, Color.White);
 
-                vertices[i * 2 + 1] = new VertexPositionColor(new Vector3(dust[i].Pos.X, dust[i].Pos.Y + 0.05f, dust[i].Pos.Z), Color.DarkBlue);
+                vertices[i * 2 + 1] = new VertexPositionColor(new Vector3(dust[i].Pos.X, dust[i].Pos.Y + 0.05f, dust[i].Pos.Z), Color.White);
             }
-            dev.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, dust.Count);
+                if(vertices.Length>0)
+                dev.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, dust.Count);
         }
     }
-}
+}   
