@@ -56,7 +56,8 @@ namespace IP3D_Fase3
             // TODO: Add your initialization logic here           
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             //cameraTP = new CameraThirdPerson(GraphicsDevice);
-
+            player1Cam = new CameraThirdPerson(GraphicsDevice);
+            player2Cam = new CameraThirdPerson(GraphicsDevice);
             //definição do viewport de cada jogador
             player1ViewPort = new Viewport();
             player1ViewPort.X = 0;
@@ -168,14 +169,29 @@ namespace IP3D_Fase3
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            Viewport original = graphics.GraphicsDevice.Viewport;
+            if (selectCam == 1)
+            {
+                graphics.GraphicsDevice.Viewport = player1ViewPort;
+                tank.Draw(player1Cam.View(), player1Cam.projection);
+                tank2.Draw(player1Cam.View(), player1Cam.projection);
+                mapa.Draw(GraphicsDevice, player1Cam.View(), player1Cam.projection);
 
-            mapa.Draw(GraphicsDevice, view, projection);
+                graphics.GraphicsDevice.Viewport = player2ViewPort;
+                tank2.Draw(player2Cam.View(), player2Cam.projection);
+                tank.Draw(player2Cam.View(), player2Cam.projection);
+                mapa.Draw(GraphicsDevice, player2Cam.View(), player2Cam.projection);
 
-            gen.Draw();
-            tank.Draw(view, projection);
-            tank2.Draw(view, projection);
-            // TODO: Add your drawing code here
+            }
+            else
+            {
+                mapa.Draw(GraphicsDevice, view, projection);
 
+                gen.Draw();
+                tank.Draw(view, projection);
+                tank2.Draw(view, projection);
+                // TODO: Add your drawing code here
+            }
             base.Draw(gameTime);
         }
 
@@ -191,9 +207,13 @@ namespace IP3D_Fase3
             switch (selectCam)
             {
                 case 1:
-                    cameraTP.Update(tank.Rotation, tank.Position);
-                    view = cameraTP.View();
-                    projection = cameraTP.projection;
+                    //cameraTP.Update(tank.Rotation, tank.Position);
+                    //view = cameraTP.View();
+                    //projection = cameraTP.projection;
+                    player1Cam.Update(tank.Rotation, tank.Position);
+                    player2Cam.Update(tank2.Rotation, tank2.Position);
+
+
                     break;
                 case 2:
                     cameraSF.Update(new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), (float)gameTime.ElapsedGameTime.TotalSeconds, mapa.SurfaceFollow(cameraSF.position.X, cameraSF.position.Z));
