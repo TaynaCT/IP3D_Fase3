@@ -92,17 +92,18 @@ namespace IP3D_Fase3
                 Exit();
             
             CamSelection(gameTime);
-
-
-            tank.Update(1, gameTime);
-            tank2.Update(2, gameTime);
-            //gen.ciclo();
             
-            if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
+            tank.Update(1, gameTime);
+
+            if(tank2!= null)
             {
-                tank.Position = tank.LasPosition;
-                tank2.Position = tank2.LasPosition;
-            }
+                tank2.Update(2, gameTime);
+                            
+                if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
+                {
+                    tank.Position = tank.LasPosition;
+                    tank2.Position = tank2.LasPosition;
+                }
 
            // COLISÕES
             Console.WriteLine(Collisions.TankCollision(tank.tankModel, tank.BoneTransforms,
@@ -120,13 +121,13 @@ namespace IP3D_Fase3
             }
             if (tank.GetSetBullet != null && tank.GetSetBullet.BulletFlag)
             {
-                if (Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms, tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix) ||
-                    tank.GetSetBullet.Position.Y < mapa.SurfaceFollow(tank.GetSetBullet.Position.X, tank.GetSetBullet.Position.Z))
-                {
-                    tank.GetSetBullet.BulletFlag = false;
-                    tank.GetSetBullet = null;
-                    tank2 = null;
-                    
+                    if (Collisions.BulletCollision(tank2.tankModel, tank2.BoneTransforms, tank.GetSetBullet.BulletModel, tank.GetSetBullet.WorldMatrix) ||
+                        tank.GetSetBullet.Position.Y < mapa.SurfaceFollow(tank.GetSetBullet.Position.X, tank.GetSetBullet.Position.Z))
+                    {
+                        tank.GetSetBullet.BulletFlag = false;
+                        tank.GetSetBullet = null;
+                        tank2 = null;
+                    }
                    
                 }
             }
