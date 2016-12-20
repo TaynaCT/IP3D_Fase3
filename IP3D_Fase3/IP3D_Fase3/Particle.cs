@@ -13,7 +13,7 @@ namespace IP3D_Fase3
     class Particle
     {   //efeito basico
         BasicEffect effect;
-        Vector3 posicao, gravidaded; //variaveis vetoriais
+        Vector3 posicao, gravidade; //variaveis vetoriais
         Matrix worldMatrix;
 
         public Particle(GraphicsDevice d, Random rnd, float raio, float altura,float dx, float dz, float px, float pz)
@@ -28,14 +28,14 @@ namespace IP3D_Fase3
                                     pz+(float)rnd.NextDouble() * raio);
 
             //direção e sentido das particulas
-            gravidaded = new Vector3((float)(rnd.NextDouble())*0.1f * (dx/dx)*2,
-                                                -0.3f,
-                                                (float)(rnd.NextDouble())* 0.1f * (dz/dz)*2);
+            gravidade = new Vector3((float)(rnd.NextDouble())*0.1f * (dx/dx)*2,
+                                      0/*-0.3f*/,
+                                     (float)(rnd.NextDouble())* 0.1f * (dz/dz)*2);
         }
 
         public void Update()
         {
-            posicao += gravidaded;
+            posicao += gravidade;
         }
 
         //métodos de retorno

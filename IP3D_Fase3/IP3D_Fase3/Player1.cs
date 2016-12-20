@@ -14,19 +14,18 @@ namespace IP3D_Fase3
     {
         Dustgen generator;
         Bullet bamB;
-
+       
         public Player1(GraphicsDevice device, ContentManager content, Map map, Vector2 newPlacement)
             : base(device, content, map, newPlacement)
         {
             generator = new Dustgen(device);
             
             directionX = (float)Math.Sin(yaw);
-            directionZ = (float)Math.Cos(yaw);
+            directionZ = (float)Math.Cos(yaw);            
         }
 
         public void Update(GameTime gameTime)
         {
-
             turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.Right) ? 1 : 0) -
                               (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.02f;
 
@@ -39,16 +38,15 @@ namespace IP3D_Fase3
                 position += new Vector3(directionX, 0, directionZ) * .02f;
                 wheelRotation += .2f; //rotação das rodas
                 position.Y = terrain.SurfaceFollow(position.X, position.Z);
+                generator.Ciclo(gameTime, rotation, position);
 
-                generator.Ciclo(directionX, directionZ, position.X, terrain.SurfaceFollow(position.X, position.Z), position.Z);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
-                wheelRotation -= .2f;
-
-            }
-
+                wheelRotation -= .2f;                
+            }            
+                
             //rodar o tanque
             if (Keyboard.GetState().IsKeyDown(Keys.A))
                 yaw += .05f;
@@ -75,6 +73,7 @@ namespace IP3D_Fase3
                     bamB = null;
 
             base.Update(gameTime);
+            
         }
         public void Draw(Matrix view, Matrix projection)
         {

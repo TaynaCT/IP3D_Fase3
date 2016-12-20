@@ -28,14 +28,27 @@ namespace IP3D_Fase3
             rnd = new Random();
             dust = new List<Particle>();
         }
-
-        public void Ciclo(float dx, float dz, float px, float alt, float pz)
+        //public void Update(Matrix tankRotation, Vector3 tankPos)
+        //{
+        //    position = tankPos - tankRotation.Forward * 2f + tankRotation.Up * .8f;
+        //    target = tankPos;
+        //dx é direcao x
+        //dz direcao z
+        //px posição x(editado)
+        //e alt altura
+        //pz posicao z
+        //public void Ciclo(float dx, float dz, float px, float alt, float pz)
+        public void Ciclo(GameTime gameTime, Matrix tankRotation, Vector3 tankPos)
         {
+            Vector3 particlesDirection = tankPos - tankRotation.Forward;
+            float directionX = particlesDirection.X;
+            float directionZ = particlesDirection.Z;
+
 
             for (int i = 0; i < 10f; i++)
                 if (dust.Count < particulas)
                 {
-                    dust.Add(new Particle(dev, rnd, raio, alt,dx,dz, px, pz));// adiciona novas particulas
+                    dust.Add(new Particle(dev, rnd, raio, particlesDirection.Y, directionX, directionZ, tankPos.X, tankPos.Z));// adiciona novas particulas
                 }
                 else
                     break;
@@ -43,7 +56,7 @@ namespace IP3D_Fase3
             for (int i = 0; i < dust.Count; i++)
             {
                 dust[i].Update();
-                if (dust[i].Height < 0)
+                if (gameTime.ElapsedGameTime.TotalMilliseconds > .5f)
                 {
                     dust.RemoveAt(i);   // este ciclo mata as particulas dependendo da altura em que se encontram.
                 }
@@ -65,7 +78,7 @@ namespace IP3D_Fase3
             {
                 vertices[i * 2] =new VertexPositionColor(dust[i].Pos, Color.White);
 
-                vertices[i * 2 + 1] = new VertexPositionColor(new Vector3(dust[i].Pos.X, dust[i].Pos.Y + 0.05f, dust[i].Pos.Z), Color.White);
+                vertices[i * 2 + 1] = new VertexPositionColor(new Vector3(dust[i].Pos.X, dust[i].Pos.Y, dust[i].Pos.Z + .05f), Color.White);
             }
                 if(vertices.Length>0)
                     dev.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, dust.Count);
