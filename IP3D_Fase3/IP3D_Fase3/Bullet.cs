@@ -38,8 +38,7 @@ namespace IP3D_Fase3
         {
             float timePassed = 0; 
             timePassed += (float)gameTime.ElapsedGameTime.Milliseconds / 2096.0f;
-            Vector3 speed = new Vector3(.02f, .02f, .02f);            
-            
+                      
             if (bulletFlag)
             {
                 position += velocity * ((float)gameTime.ElapsedGameTime.Milliseconds / 90.0f);                
