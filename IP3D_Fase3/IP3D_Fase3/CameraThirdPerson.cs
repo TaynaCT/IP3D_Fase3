@@ -38,7 +38,9 @@ namespace IP3D_Fase3
 
         public void Update(Matrix tankRotation, Vector3 tankPos)
         {
+            //posição da câmera
             position = tankPos - tankRotation.Forward * 2f + tankRotation.Up * .8f;
+            //target da camera
             target = tankPos;
         }
 

@@ -189,7 +189,7 @@ namespace IP3D_Fase3
                 wheelRotation += .2f; //rotação das rodas
                 position.Y = terrain.SurfaceFollow(position.X, position.Z);
                 generator.Ciclo(gameTime, rotation, position);
-                generator.IsMoving = true;
+                
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
