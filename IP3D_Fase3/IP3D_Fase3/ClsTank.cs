@@ -14,6 +14,7 @@ namespace IP3D_Fase3
     {
         protected Model myModel;
         protected Bullet bamB;
+        protected Dustgen generator;
         public float scale;
 
         //bones
@@ -36,8 +37,7 @@ namespace IP3D_Fase3
         protected Matrix rBackWheelTransform;
        // Guarda todas as transformações
         protected Matrix[] boneTransforms;
-
-
+        
         protected Matrix rotation; // rotação do tank
 
         protected float height;
@@ -99,10 +99,29 @@ namespace IP3D_Fase3
             turretRotation = 1f;
             cannonRotation = .2f;
             wheelRotation = .5f;
+
+            generator = new Dustgen(device);
+            directionX = (float)Math.Sin(yaw);
+            directionZ = (float)Math.Cos(yaw);
         }
 
-        public void Update(/*int num,*/ GameTime gameTime)
-        { 
+        public void Update(int num, GameTime gameTime)
+        {            
+            switch (num)
+            {
+                case 1:
+                    Player1(gameTime);
+                    break;
+
+                case 2:
+                    player2(gameTime);
+                    break;
+                    
+            }
+
+            directionX = (float)Math.Sin(yaw);
+            directionZ = (float)Math.Cos(yaw);
+
             lastPosition = position;
 
             //põe o tank em cima do terreno
@@ -123,9 +142,7 @@ namespace IP3D_Fase3
                 if ((bamB.Position.X < 0 || bamB.Position.X > terrain.MapLimit) || (bamB.Position.Z < 0 || bamB.Position.Z > terrain.MapLimit))
                     bamB = null;
         }
-
-
-
+        
         public void Draw(Matrix view, Matrix projection)
         {
             // Aplica as transformações em cascata por todos os bones       
@@ -154,7 +171,93 @@ namespace IP3D_Fase3
             if (bamB!= null && bamB.BulletFlag) 
                 bamB.Draw(view, projection);
 
-                //generator.Draw(view, projection);
+                generator.Draw(view, projection);
+        }
+
+
+        protected void Player1(GameTime gameTime)
+        {
+            turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.Right) ? 1 : 0) -
+                              (Keyboard.GetState().IsKeyDown(Keys.Left) ? 1 : 0)) * -.02f;
+
+            cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Up) ? 1 : 0) -
+                          (Keyboard.GetState().IsKeyDown(Keys.Down) ? 1 : 0)) * -.02f;
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                position += new Vector3(directionX, 0, directionZ) * .02f;
+                wheelRotation += .2f; //rotação das rodas
+                position.Y = terrain.SurfaceFollow(position.X, position.Z);
+                generator.Ciclo(gameTime, rotation, position);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+                wheelRotation -= .2f;
+                generator.Ciclo(gameTime, rotation, position);
+            }
+
+            //rodar o tanque
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+                yaw += .05f;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+                yaw -= .05f;
+           
+            //BULLET 
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                if (bamB == null)
+                    bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
+                bamB.BulletFlag = true;
+
+            }
+
+            if (bamB != null && bamB.BulletFlag)
+                bamB.bulletUpdate(gameTime);
+        }
+
+        protected void player2(GameTime gameTime)
+        {
+            turretRotation += ((Keyboard.GetState().IsKeyDown(Keys.O) ? 1 : 0) -
+                             (Keyboard.GetState().IsKeyDown(Keys.U) ? 1 : 0)) * -.02f;
+
+            cannonRotation += ((Keyboard.GetState().IsKeyDown(Keys.Y) ? 1 : 0) -
+                          (Keyboard.GetState().IsKeyDown(Keys.H) ? 1 : 0)) * -.02f;
+
+            //andar com o tank
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
+            {
+                position += new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+                wheelRotation += .2f; //rotação das rodas
+                generator.Ciclo(gameTime, rotation, position);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                position -= new Vector3(directionX, terrain.SurfaceFollow(position.X, position.Z), directionZ) * .02f;
+                wheelRotation -= .2f;
+                generator.Ciclo(gameTime, rotation, position);
+            }
+
+            //rodar o tanque
+            if (Keyboard.GetState().IsKeyDown(Keys.J))
+                yaw += .05f;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+                yaw -= .05f;
+
+            //BULLET 
+            if (Keyboard.GetState().IsKeyDown(Keys.RightShift))
+            {
+                if (bamB == null)
+                    bamB = new Bullet(device, content, terrain, Position + new Vector3(0, 0.3f, 0), Target);
+                bamB.BulletFlag = true;
+            }
+
+            if (bamB != null && bamB.BulletFlag)
+                bamB.bulletUpdate(gameTime);
+
+
         }
 
         public Vector3 Position

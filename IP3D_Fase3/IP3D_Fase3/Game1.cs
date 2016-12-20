@@ -24,12 +24,9 @@ namespace IP3D_Fase3
         //mapa
         Map mapa;
 
-        //tanks       
-        Player1 tank;
-        Enemy tank2;
-        //particula
-             
-        //Dustgen gen;
+        //tanks        
+        ClsTank tank;
+        ClsTank tank2;
         
         public Game1()
         {
@@ -68,8 +65,8 @@ namespace IP3D_Fase3
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mapa = new Map(GraphicsDevice, Content, cameraF.effect);
 
-            tank = new Player1(GraphicsDevice, Content, mapa, new Vector2(10, 10));
-            tank2 = new Enemy(GraphicsDevice, Content, mapa, new Vector2(10, 6));
+            tank = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 10));
+            tank2 = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 6));
                              
             // TODO: use this.Content to load your game content here
         }
@@ -96,9 +93,9 @@ namespace IP3D_Fase3
             
             CamSelection(gameTime);
 
-                       
-            tank.Update(gameTime);
-            tank2.Update(gameTime);
+
+            tank.Update(1, gameTime);
+            tank2.Update(2, gameTime);
             //gen.ciclo();
             
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
@@ -143,8 +140,7 @@ namespace IP3D_Fase3
         {
             GraphicsDevice.Clear(Color.Black);
 
-            mapa.Draw(GraphicsDevice, view, projection);
-            //gen.Draw(view, projection);
+            mapa.Draw(GraphicsDevice, view, projection);            
             tank.Draw(view, projection);
             tank2.Draw(view, projection);
                   
