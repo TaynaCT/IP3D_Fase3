@@ -106,7 +106,9 @@ namespace IP3D_Fase3
         }
 
         public void Update(int num, GameTime gameTime)
-        {            
+        {
+            lastPosition = position;
+
             switch (num)
             {
                 case 1:
@@ -121,8 +123,7 @@ namespace IP3D_Fase3
 
             directionX = (float)Math.Sin(yaw);
             directionZ = (float)Math.Cos(yaw);
-
-            lastPosition = position;
+                   
 
             //põe o tank em cima do terreno
             position.Y = terrain.SurfaceFollow(position.X, position.Z);

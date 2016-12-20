@@ -100,7 +100,7 @@ namespace IP3D_Fase3
             
             if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
             {
-                tank.Position = tank.LasPosition - new Vector3(1, 1, 1);
+                tank.Position = tank.LasPosition;
                 tank2.Position = tank2.LasPosition;
             }
 
