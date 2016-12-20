@@ -115,6 +115,7 @@ namespace IP3D_Fase3
                 {
                     tank2.GetSetBullet.BulletFlag = false;
                     tank2.GetSetBullet = null;
+                    tank2 = null;
                 }
             }
             if (tank.GetSetBullet != null && tank.GetSetBullet.BulletFlag)
@@ -124,6 +125,9 @@ namespace IP3D_Fase3
                 {
                     tank.GetSetBullet.BulletFlag = false;
                     tank.GetSetBullet = null;
+                    tank = null;
+                    
+                   
                 }
             }
 
@@ -140,9 +144,15 @@ namespace IP3D_Fase3
         {
             GraphicsDevice.Clear(Color.Black);
 
-            mapa.Draw(GraphicsDevice, view, projection);            
-            tank.Draw(view, projection);
-            tank2.Draw(view, projection);                  
+            mapa.Draw(GraphicsDevice, view, projection);
+            if (tank != null)
+            {
+                tank.Draw(view, projection);
+            }
+            if (tank2 != null)
+            {
+                tank2.Draw(view, projection);
+            }                  
 
              // TODO: Add your drawing code here
             
@@ -179,6 +189,7 @@ namespace IP3D_Fase3
             }
 
         }
+
     }
 }
 
