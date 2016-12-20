@@ -115,7 +115,7 @@ namespace IP3D_Fase3
                 {
                     tank2.GetSetBullet.BulletFlag = false;
                     tank2.GetSetBullet = null;
-                    tank2 = null;
+                    tank = null;
                 }
             }
             if (tank.GetSetBullet != null && tank.GetSetBullet.BulletFlag)
@@ -125,7 +125,7 @@ namespace IP3D_Fase3
                 {
                     tank.GetSetBullet.BulletFlag = false;
                     tank.GetSetBullet = null;
-                    tank = null;
+                    tank2 = null;
                     
                    
                 }
