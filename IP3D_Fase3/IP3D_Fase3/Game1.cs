@@ -48,9 +48,9 @@ namespace IP3D_Fase3
         {
             // TODO: Add your initialization logic here           
             Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            cameraTP = new CameraThirdPerson(GraphicsDevice);            
-            cameraF = new CameraFree(GraphicsDevice);
-            cameraSF = new CameraSurfaceFollow(GraphicsDevice);
+            cameraTP = new CameraThirdPerson(GraphicsDevice);
+            cameraF = new CameraFree(GraphicsDevice, new Vector3(30, 0, 20));
+            cameraSF = new CameraSurfaceFollow(GraphicsDevice, new Vector3(30, 0, 20));
             selectCam = 1;
             base.Initialize();
         }
@@ -65,8 +65,8 @@ namespace IP3D_Fase3
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mapa = new Map(GraphicsDevice, Content, cameraF.effect);
 
-            tank = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 10));
-            tank2 = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(10, 6));
+            tank = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(20, 15));
+            tank2 = new ClsTank(GraphicsDevice, Content, mapa, new Vector2(32, 20));
                              
             // TODO: use this.Content to load your game content here
         }
@@ -93,11 +93,11 @@ namespace IP3D_Fase3
             
             CamSelection(gameTime);
             
-            tank.Update(1, gameTime);
+            tank.Update(1, gameTime, tank.Position);
 
             if(tank2!= null)
             {
-                tank2.Update(2, gameTime);
+                tank2.Update(2, gameTime, tank.Position);
                             
                 if (Collisions.TankCollision(tank.tankModel, tank.BoneTransforms, tank2.tankModel, tank2.BoneTransforms))
                 {

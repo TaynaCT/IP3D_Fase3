@@ -105,7 +105,7 @@ namespace IP3D_Fase3
             directionZ = (float)Math.Cos(yaw);
         }
 
-        public void Update(int num, GameTime gameTime)
+        public void Update(int num, GameTime gameTime, Vector3 targetPos)
         {
             lastPosition = position;
 
@@ -116,7 +116,7 @@ namespace IP3D_Fase3
                     break;
 
                 case 2:
-                    player2(gameTime, 2);
+                    player2(gameTime, 2, targetPos);
                     break;
                     
             }
@@ -220,7 +220,7 @@ namespace IP3D_Fase3
                 bamB.bulletUpdate(gameTime);
         }
 
-        protected void player2(GameTime gameTime, int mode)
+        protected void player2(GameTime gameTime, int mode, Vector3 targetPos)
         {
             switch (mode) {
                 case 1:
@@ -237,6 +237,7 @@ namespace IP3D_Fase3
                         position.Y = terrain.SurfaceFollow(position.X, position.Z);
                         wheelRotation += .2f; //rotação das rodas
                         generator.Ciclo(gameTime, rotation, position);
+                        wheelRotation += .2f;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.K))
                     {
@@ -244,6 +245,7 @@ namespace IP3D_Fase3
                         position.Y = terrain.SurfaceFollow(position.X, position.Z);
                         wheelRotation -= .2f;
                         generator.Ciclo(gameTime, rotation, position);
+                        wheelRotation -= .2f;
                     }
 
                     //rodar o tanque
@@ -255,18 +257,22 @@ namespace IP3D_Fase3
                     break;
 
                 case 2:
-
-                    position += rotation.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                    Random rand = new Random();
-                    float distance = (float)rand.NextDouble() * 5 /*radius*/;
-                    float angle = (float)rand.NextDouble() * MathHelper.TwoPi;
-
-                    yaw += distance * (float)Math.Cos(angle) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    yaw -= distance * (float)Math.Sin(angle) * (float)(float)gameTime.ElapsedGameTime.TotalSeconds; 
-
                     
+                    position += rotation.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    position.Y = terrain.SurfaceFollow(position.X, position.Z);
 
+                    if ((position.X > terrain.MapLimit - 10 || position.Z > terrain.MapLimit - 10) || (position.X < 10 || position.Z < 10))
+                        yaw -= MathHelper.Pi / 2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    
+                        Random rand = new Random();
+                        float distance = (float)rand.NextDouble() * 5 /*radius*/;
+                        float angle = (float)rand.NextDouble() * MathHelper.TwoPi;
+
+                        yaw += distance * (float)Math.Cos(angle) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        yaw -= distance * (float)Math.Sin(angle) * (float)(float)gameTime.ElapsedGameTime.TotalSeconds;
+                        
+                    
+                    wheelRotation += .2f;
                     break;
         }
             //BULLET 

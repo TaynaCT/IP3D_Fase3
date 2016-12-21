@@ -25,13 +25,13 @@ namespace IP3D_Fase3
         float nearPlane = .1f;
         float farPlane = 700f;
 
-        public CameraFree(GraphicsDevice device)
+        public CameraFree(GraphicsDevice device, Vector3 inicalPos)
         {
             world = Matrix.Identity;
 
             effect = new BasicEffect(device);
-                       
-            position = new Vector3(10, 10, 10);
+
+            position = inicalPos;
             direction = Vector3.Cross(Vector3.Forward, Vector3.Up);
             up = Vector3.Up;
             speed = .2f;
