@@ -257,13 +257,23 @@ namespace IP3D_Fase3
                     break;
 
                 case 2:
+
+                    float searchRadius = 10;
                     
                     position += rotation.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     position.Y = terrain.SurfaceFollow(position.X, position.Z);
 
                     if ((position.X > terrain.MapLimit - 10 || position.Z > terrain.MapLimit - 10) || (position.X < 10 || position.Z < 10))
                         yaw -= MathHelper.Pi / 2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    
+
+                    //if (targetPos.X < searchRadius || targetPos.Z < searchRadius) {
+
+                    //    float distanceX = position.X - targetPos.X;
+                    //    float distanceZ = position.Z - targetPos.Z;
+                        
+                    //    float heightX = (distanceX/2)
+
+                    //}
                         Random rand = new Random();
                         float distance = (float)rand.NextDouble() * 5 /*radius*/;
                         float angle = (float)rand.NextDouble() * MathHelper.TwoPi;
